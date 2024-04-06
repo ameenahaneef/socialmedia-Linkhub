@@ -4,22 +4,24 @@ import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/presentation/screens/home/homesplash.dart';
 
 class SplashScreen extends StatelessWidget {
-SplashScreen({super.key});
+  SplashScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3),() {
-    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context){
-        return const HomeSplash();
-      }),(route) => false,);
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) {
+          return const HomeSplash();
+        }),
+        (route) => false,
+      );
     });
     return Scaffold(
-      backgroundColor:backgroundColor,
+      backgroundColor: backgroundColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('LinkHub',
-                style:style),
+            Text('LinkHub', style: style),
           ],
         ),
       ),

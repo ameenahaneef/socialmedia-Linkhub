@@ -19,7 +19,7 @@ class MainHome extends StatelessWidget {
           Center(
               child: Image.asset(
             'assets/images/[removal.ai]_da4a22d4-3aa7-4812-ac4e-aead220b7375-screenshot-2024-03-26-192518.png',
-           scale: 2.3,
+            scale: 2.3,
           )),
           const SizedBox(
             height: 50,
@@ -32,9 +32,10 @@ class MainHome extends StatelessWidget {
           ),
           ElevatedButton(
               onPressed: () {
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context){
-            return LoginScreen();
-          }));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return LoginScreen();
+                }));
               },
               style: buttonstyle,
               child: Text(

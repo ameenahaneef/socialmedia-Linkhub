@@ -33,8 +33,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
+  flutter_secure_storage: ^9.0.0
   google_fonts: 6.2.0
+  http: ^1.2.1
+  image_picker: ^1.0.7
   like_button: ^2.0.5
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -60,6 +64,7 @@ flutter:
     - assets/images/[removal.ai]_4eefa410-d30a-47d3-8050-8050591fe0f3-54158.png
     - assets/images/[removal.ai]_e9c280db-4b6c-43c6-8755-cf664c1a382e-screenshot-2024-03-30-175828.png
     - assets/images/young-happy-businesswoman-wearing-headset-waving-while-video-conference-office.jpg
+    - assets/images/young-lady-with-deep-green-eyes-long-brown-hair.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

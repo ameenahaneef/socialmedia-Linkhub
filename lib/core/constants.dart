@@ -7,7 +7,7 @@ TextStyle style = GoogleFonts.caveat(
         color: Colors.white, fontSize: 50, fontWeight: FontWeight.bold));
 const height = SizedBox(height: 10);
 const height20 = SizedBox(height: 20);
-const kwidth=SizedBox(width: 10);
+const kwidth = SizedBox(width: 10);
 
 TextStyle stylet = GoogleFonts.montserrat(
     textStyle: const TextStyle(color: Colors.white, fontSize: 18));
@@ -20,6 +20,4 @@ final buttonstyle = ElevatedButton.styleFrom(
   shadowColor: kwhite,
 );
 
-TextStyle nostyle = TextStyle(color: kwhite);
-
-
+TextStyle nostyle = const TextStyle(color: kwhite);
