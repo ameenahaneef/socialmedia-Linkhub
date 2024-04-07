@@ -12,7 +12,7 @@ class ProfileModel {
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     return ProfileModel(
         statusCode: json['status_code'],
-        message: json['messege'],
+        message: json['message'],
         afterExecution: json['after execution'] != null
             ? AfterExecution.fromJson(json['after execution'])
             : null);

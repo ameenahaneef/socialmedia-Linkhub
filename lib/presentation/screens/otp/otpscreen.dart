@@ -61,6 +61,7 @@ class OtpScreen extends StatelessWidget {
                         '${controller1.text}${controller2.text}${controller3.text}${controller4.text}';
                     print(otp);
                     print('ssss');
+                    
                     bool isOtpVerified =
                         await SignupService().otpVerification(otp, token);
                     if (isOtpVerified) {

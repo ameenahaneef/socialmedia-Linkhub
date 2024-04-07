@@ -33,9 +33,13 @@ class ResetPassword extends StatelessWidget {
             height20,
             ElevatedButton(
               onPressed: () {
-                SignupService().resetPassword(otp, newpasswordController.text,
-                    confrimnewController.text, token);
-                navigate(context, LoginScreen());
+                if (newpasswordController.text == confrimnewController.text) {
+                  SignupService().resetPassword(otp, newpasswordController.text,
+                      confrimnewController.text, token);
+                  navigate(context, LoginScreen());
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('password not matching')));
+                }
               },
               child: Text('submit'),
               style: buttonstyle,
