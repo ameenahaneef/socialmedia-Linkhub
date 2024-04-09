@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/application/apiservices/apiservice.dart';
+import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/core/navigator.dart';
@@ -33,17 +33,19 @@ class ResetPassword extends StatelessWidget {
             height20,
             ElevatedButton(
               onPressed: () {
-                
                 if (newpasswordController.text == confrimnewController.text) {
                   SignupService().resetPassword(otp, newpasswordController.text,
                       confrimnewController.text, token);
                   navigate(context, LoginScreen());
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('password not matching')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text('password not matching'),
+                    backgroundColor: korange,
+                  ));
                 }
               },
-              child: Text('submit'),
               style: buttonstyle,
+              child: const Text('submit'),
             )
           ],
         ),

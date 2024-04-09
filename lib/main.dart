@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/application/bloc/accountbloc/account_bloc.dart';
+import 'package:socialmedia/application/bloc/post/post_bloc.dart';
 import 'package:socialmedia/application/sharedpreference/sharedpreference.dart';
 import 'package:socialmedia/application/bloc/navigationbloc/navigation_bloc.dart';
 import 'package:socialmedia/presentation/screens/home/splash.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
-        BlocProvider(create: (context) => AccountBloc())
+        BlocProvider(create: (context) => AccountBloc()),
+        BlocProvider(create: (context) => PostBloc()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -146,9 +146,10 @@ class SignupService {
           'x-refresh-token': '$refreshToken'
         },
       );
-      log('❤️${response.body}');
+      log('👌${response.body}');
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
+
         return ProfileModel.fromJson(jsonResponse);
       } else {
         log('failed to fetch ${response.statusCode}');

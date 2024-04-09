@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socialmedia/application/apiservices/apiservice.dart';
+import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/presentation/screens/mainhomee/screenmain.dart';
@@ -61,7 +61,7 @@ class OtpScreen extends StatelessWidget {
                         '${controller1.text}${controller2.text}${controller3.text}${controller4.text}';
                     print(otp);
                     print('ssss');
-                    
+
                     bool isOtpVerified =
                         await SignupService().otpVerification(otp, token);
                     if (isOtpVerified) {

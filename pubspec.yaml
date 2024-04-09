@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.6
   curved_navigation_bar: ^1.0.3
   flutter:
@@ -36,14 +37,18 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   google_fonts: 6.2.0
   http: ^1.2.1
+  http_parser: ^4.0.2
   image_picker: ^1.0.7
+  json_annotation: ^4.8.1
   like_button: ^2.0.5
   shared_preferences: ^2.2.2
 
 dev_dependencies:
+  build_runner: ^2.4.9
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.7.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

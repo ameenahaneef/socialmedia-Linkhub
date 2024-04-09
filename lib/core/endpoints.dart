@@ -1,3 +1,5 @@
+const apikey = 'apikey@ciao';
+
 class EndPoints {
   static String baseUrl = "http://ciao.ashkar.tech";
   static String signupUrl = "/signup";
@@ -6,4 +8,5 @@ class EndPoints {
   static String forgotPassworUrl = "/forgotpassword";
   static String resetPasswordUrl = "/resetpassword";
   static String profileUrl = "/profile";
+  static String postAddUrl = "/post/";
 }

@@ -1,4 +1,3 @@
-
 class ProfileModel {
   int statusCode;
   String message;

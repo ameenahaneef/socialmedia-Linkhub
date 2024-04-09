@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/application/bloc/accountbloc/account_bloc.dart';
-import 'package:socialmedia/application/sharedpreference/sharedpreference.dart';
+import 'package:socialmedia/application/bloc/post/post_bloc.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/presentation/screens/account/widget/bottomsheet.dart';
@@ -14,16 +13,18 @@ class AccountDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.read<AccountBloc>().add(FetchUserDataEvent());
+    context.read<PostBloc>().add(FetchPostsEvent());
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: backgroundColor,
           actions: [
             IconButton(
-                onPressed: ()  {
+                onPressed: () {
                   bottomsheet(context);
                 },
                 icon: const Icon(
-                  Icons.logout,
+                  Icons.more_vert,
                   color: kwhite,
                 ))
           ],
@@ -31,7 +32,7 @@ class AccountDetails extends StatelessWidget {
         backgroundColor: backgroundColor,
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 30.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 20),
             child: BlocBuilder<AccountBloc, AccountState>(
               builder: (context, state) {
                 if (state is LoadedState) {
@@ -45,7 +46,9 @@ class AccountDetails extends StatelessWidget {
                             child: IconButton(
                                 onPressed: () {}, icon: const Icon(Icons.add)),
                           ),
-                          kwidth,
+                          const SizedBox(
+                            width: 50,
+                          ),
                           Column(
                             children: [
                               Text(
@@ -58,31 +61,16 @@ class AccountDetails extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            width: 120,
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                bottomsheet(context);
-                              },
-                              icon: const Icon(
-                                Icons.more_vert,
-                                color: kwhite,
-                                size: 30,
-                              ))
                         ],
                       ),
                       height,
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange[800]),
-                          child: Text(
-                            'Edit profile',
-                            style: nostyle,
-                          ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange[800]),
+                        child: Text(
+                          'Edit profile',
+                          style: nostyle,
                         ),
                       ),
                       Row(
@@ -145,33 +133,41 @@ class AccountDetails extends StatelessWidget {
                         'Posts',
                         style: nostyle,
                       ),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 8.0,
-                                mainAxisSpacing: 8.0),
-                        itemCount: 20,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey,
-                              image: const DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/[removal.ai]_b1934004-b13d-49d0-8db5-f8d0882759c9-screenshot-2024-03-30-221955.png'),
-                                  fit: BoxFit.cover),
-                            ),
-                          );
+                      BlocBuilder<PostBloc, PostState>(
+                        builder: (context, state) {
+                          if (state is PostFetchSuccessState) {
+                            return GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 8.0,
+                                      mainAxisSpacing: 8.0),
+                              itemCount: state.posts.length,
+                              itemBuilder: (context, index) {
+                                final post = state.posts[index];
+
+                                return Container(
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey,
+                                    image:
+                                        DecorationImage(image: AssetImage('')),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
                         },
                       )
                     ],
                   );
                 }
-                return SizedBox();
+                return const SizedBox();
               },
             ),
           ),

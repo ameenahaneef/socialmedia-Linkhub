@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:socialmedia/application/apiservices/apiservice.dart';
+import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/application/models/profilemodel.dart';
 
 part 'account_event.dart';
