@@ -16,6 +16,17 @@ class ProfileModel {
             ? AfterExecution.fromJson(json['after execution'])
             : null);
   }
+   ProfileModel copyWith({
+    int? statusCode,
+    String? message,
+    AfterExecution? afterExecution,
+  }) {
+    return ProfileModel(
+      statusCode: statusCode ?? this.statusCode,
+      message: message ?? this.message,
+      afterExecution: afterExecution ?? this.afterExecution,
+    );
+  }
 }
 
 class AfterExecution {
@@ -40,4 +51,21 @@ class AfterExecution {
         followersCount: json['followers_count'],
         followingCount: json['following_count']);
   }
+
+ AfterExecution copyWith({
+    String? name,
+    String? username,
+    int? postsCount,
+    int? followersCount,
+    int? followingCount,
+  }) {
+    return AfterExecution(
+      name: name ?? this.name,
+      username: username ?? this.username,
+      postsCount: postsCount ?? this.postsCount,
+      followersCount: followersCount ?? this.followersCount,
+      followingCount: followingCount ?? this.followingCount,
+    );
+  }
+
 }

@@ -146,7 +146,6 @@ class SignupService {
           'x-refresh-token': '$refreshToken'
         },
       );
-      //log('👌${response.body}');
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
 

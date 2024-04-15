@@ -24,10 +24,20 @@ class PostFetchSuccessState extends PostState {
 }
 
 class PostFetchFailureState extends PostState {}
-class PostFetchEmptyState extends PostState{}
+
+class PostFetchEmptyState extends PostState {}
 
 class PostDeleteProgressState extends PostState {}
 
 class PostDeleteSuccessState extends PostState {}
 
 class PostDeleteFailureState extends PostState {}
+
+class CaptionEditingProgressState extends PostState {}
+
+class CaptionEditSuccessState extends PostState {
+  final String newCaption;
+  CaptionEditSuccessState({required this.newCaption});
+}
+
+class CaptionEditFailureState extends PostState {}

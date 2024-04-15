@@ -4,3 +4,5 @@ part of 'account_bloc.dart';
 sealed class AccountEvent {}
 
 class FetchUserDataEvent extends AccountEvent {}
+class PostAddedEvent extends AccountEvent{}
+class PostDeletedEvent extends AccountEvent{}

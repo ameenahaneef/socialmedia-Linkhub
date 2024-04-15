@@ -1,7 +1,9 @@
+
 import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:socialmedia/application/apiservices/postservice.dart';
+import 'package:socialmedia/application/bloc/accountbloc/account_bloc.dart';
 import 'package:socialmedia/application/models/fetchpostmodel.dart';
 
 part 'post_event.dart';
@@ -9,9 +11,9 @@ part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final List<String> imagess = [];
-  
+  final AccountBloc accountBloc;
 
-  PostBloc() : super(PostInitial()) {
+  PostBloc({required this.accountBloc}) : super(PostInitial()) {
     on<PickImagesEvent>((event, emit) async {
       final List<XFile> pickedFiles = await ImagePicker().pickMultiImage();
       if (pickedFiles.isNotEmpty) {
@@ -29,10 +31,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       try {
         await PostApiService().postImage(caption, imagePaths);
-        List<AfterExecution>updatedPosts=await PostApiService().postFetch();
+        List<AfterExecution> updatedPosts = await PostApiService().postFetch();
         emit(ImageUploadSuccessState());
-                emit(PostFetchSuccessState(posts: updatedPosts));
-
+        emit(PostFetchSuccessState(posts: updatedPosts));
+       
       } catch (e) {
         emit(ImageUploadFailureState());
       }
@@ -41,28 +43,43 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<FetchPostsEvent>((event, emit) async {
       emit(PostFetchProgressState());
       try {
-      List<AfterExecution> post = await PostApiService().postFetch();
-print('fetched posts:$post');
-if(post.isEmpty){
-  emit(PostFetchEmptyState());
-}else{
-        emit(PostFetchSuccessState(posts: post));
-      }} catch (e) {
+        List<AfterExecution> post = await PostApiService().postFetch();
+        print('fetched posts:$post');
+        if (post.isEmpty) {
+          emit(PostFetchEmptyState());
+        } else {
+          emit(PostFetchSuccessState(posts: post));
+        }
+      } catch (e) {
         emit(PostFetchFailureState());
       }
     });
 
-    on<DeletePostEvent>((event, emit)async{
-        emit(PostDeleteProgressState());
-        try {
-          await PostApiService().deletePost(event.postId);
-          List<AfterExecution>updatedPosts=await PostApiService().postFetch();
-          emit(PostDeleteSuccessState());
-                    emit(PostFetchSuccessState(posts: updatedPosts));
-
-        } catch (e) {
-          emit(PostDeleteFailureState());
-        }
+    on<DeletePostEvent>((event, emit) async {
+      emit(PostDeleteProgressState());
+      try {
+        await PostApiService().deletePost(event.postId);
+        List<AfterExecution> updatedPosts = await PostApiService().postFetch();
+        emit(PostDeleteSuccessState());
+        emit(PostFetchSuccessState(posts: updatedPosts));
+        accountBloc.add(PostDeletedEvent());
+      } catch (e) {
+        emit(PostDeleteFailureState());
+      }
     });
-  } 
+
+on<EditCaptionEvent>((event, emit) async{
+  try {
+    await PostApiService().editCaption(event.newCaption, event.postId);
+    emit(CaptionEditSuccessState(newCaption: event.newCaption));
+
+    
+  } catch (e) {
+    emit(CaptionEditFailureState());
+  }
+
+});
+  }
+   
+   
 }

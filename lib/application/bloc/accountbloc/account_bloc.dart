@@ -18,5 +18,28 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(ErrorState('failed to fetch user data'));
       }
     });
+    on<PostAddedEvent>((event, emit) async{
+ if (state is LoadedState) {
+        final currentState = state as LoadedState;
+        final updatedProfile = currentState.profileModel.copyWith(
+          afterExecution: currentState.profileModel.afterExecution!.copyWith(
+            postsCount: currentState.profileModel.afterExecution!.postsCount + 1,
+          ),
+        );
+        emit(LoadedState(updatedProfile));
+      }
+    });
+
+    on<PostDeletedEvent>((event, emit)async{
+ if (state is LoadedState) {
+        final currentState = state as LoadedState;
+        final updatedProfile = currentState.profileModel.copyWith(
+          afterExecution: currentState.profileModel.afterExecution!.copyWith(
+            postsCount: currentState.profileModel.afterExecution!.postsCount - 1,
+          ),
+        );
+        emit(LoadedState(updatedProfile));
+      }
+    });
   }
 }

@@ -60,7 +60,7 @@ class PostApiService {
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final List<dynamic> postData = jsonResponse['after execution'];
-        if(postData.isEmpty){
+        if (postData.isEmpty) {
           log('nothing is available');
           return [];
         }
@@ -83,15 +83,35 @@ class PostApiService {
 
   Future<void> deletePost(String postid) async {
     try {
-      final accessToken =await getAccessToken();
-      final refreshToken =await getRefreshToken();
-      
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
+
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
+      final body = {"postid": postid};
+      final response = await http.delete(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': '$accessToken',
+            'x-refresh-token': '$refreshToken'
+          },
+          body: jsonEncode(body));
+
+      log(response.body);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+   Future<void> editCaption(String caption,String postid) async {
+    try {
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
 
       final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
       final body = {
-        "postid": postid
-        };
-      final response = await http.delete(url,
+        "caption":caption,
+        "postid": postid};
+      final response = await http.patch(url,
           headers: {
             'Content-Type': 'application/json',
             'x-api-key': 'apikey@ciao',

@@ -16,3 +16,10 @@ class DeletePostEvent extends PostEvent{
   final String postId;
   DeletePostEvent(this.postId);
 }
+
+
+class EditCaptionEvent extends PostEvent{
+  final String postId;
+  final String newCaption;
+  EditCaptionEvent({required this.postId,required this.newCaption});
+}

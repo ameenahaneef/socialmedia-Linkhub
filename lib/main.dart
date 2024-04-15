@@ -21,12 +21,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
+    final accountBloc=AccountBloc();
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationBloc()),
         BlocProvider(create: (context) => AccountBloc()),
-        BlocProvider(create: (context) => PostBloc()),
+        BlocProvider(create: (context) => PostBloc(accountBloc: accountBloc)),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
