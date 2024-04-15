@@ -21,3 +21,4 @@ final buttonstyle = ElevatedButton.styleFrom(
 );
 
 TextStyle nostyle = const TextStyle(color: kwhite);
+TextStyle captionStyle = const TextStyle(color: kwhite, fontSize: 20);

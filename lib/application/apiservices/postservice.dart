@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:socialmedia/application/models/fetchpostmodel.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
 import 'package:socialmedia/core/endpoints.dart';
@@ -42,7 +41,7 @@ class PostApiService {
     }
   }
 
-  Future<List<FetchModel>> postFetch() async {
+  Future<List<AfterExecution>> postFetch() async {
     try {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
@@ -58,21 +57,52 @@ class PostApiService {
           'x-refresh-token': refreshToken
         },
       );
-      print('1233443545454665');
-
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final List<dynamic> postData = jsonResponse['after execution'];
-        final List<FetchModel> post =
-            postData.map((postJson) => FetchModel.fromJson(postJson)).toList();
-print(post.length);
+        if(postData.isEmpty){
+          log('nothing is available');
+          return [];
+        }
+        final List<AfterExecution> post = postData
+            .map((postJson) => AfterExecution.fromJson(postJson))
+            .toList();
+
+        log('❤️❤️❤️❤️${response.body}');
+        print('👀👀👀👀👀👀$post');
+
         return post;
       } else {
         log('failed to fetch ${response.statusCode}');
       }
     } catch (e) {
-      log('👀error ${e.toString()}');
+      log('🤣🤣👀error ${e.toString()}');
     }
     return [];
+  }
+
+  Future<void> deletePost(String postid) async {
+    try {
+      final accessToken =await getAccessToken();
+      final refreshToken =await getRefreshToken();
+      
+
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
+      final body = {
+        "postid": postid
+        };
+      final response = await http.delete(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': '$accessToken',
+            'x-refresh-token': '$refreshToken'
+          },
+          body: jsonEncode(body));
+
+      log(response.body);
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

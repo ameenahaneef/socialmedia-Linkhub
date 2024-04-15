@@ -9,9 +9,11 @@ class FetchModel {
     required this.afterExecution,
   });
   factory FetchModel.fromJson(Map<String, dynamic> json) {
+    print('Raw JSON Response: $json');
     List<dynamic> afterExecutionList = json['after execution']??[];
     List<AfterExecution> afterExecutions =
         afterExecutionList.map((e) => AfterExecution.fromJson(e)).toList();
+        print('afterparsing:$afterExecutions');
     return FetchModel(
         statusCode: json['status_code']??0,
         message: json['message']??'',

@@ -17,6 +17,7 @@ class AddPostWidget extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: backgroundColor,
+        
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SingleChildScrollView(
@@ -60,11 +61,13 @@ class AddPostWidget extends StatelessWidget {
                               print(imagess);
                               context.read<PostBloc>().add(UploadImagesEvent(
                                   captionController.text, imagess));
+                                 
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
+                                  .showSnackBar(const SnackBar(
                                 content: Text('posted successfully'),
                                 backgroundColor: Colors.green,
                               ));
+                               captionController.clear();
                             },
                             style: buttonstyle,
                             child: const Text('post'),

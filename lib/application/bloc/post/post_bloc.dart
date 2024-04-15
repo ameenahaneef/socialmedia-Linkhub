@@ -9,6 +9,7 @@ part 'post_state.dart';
 
 class PostBloc extends Bloc<PostEvent, PostState> {
   final List<String> imagess = [];
+  
 
   PostBloc() : super(PostInitial()) {
     on<PickImagesEvent>((event, emit) async {
@@ -22,12 +23,16 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     });
 
     on<UploadImagesEvent>((event, emit) async {
+      print('upload images event triggeres');
       final String caption = event.caption;
       final List<String> imagePaths = event.imagePaths;
 
       try {
         await PostApiService().postImage(caption, imagePaths);
+        List<AfterExecution>updatedPosts=await PostApiService().postFetch();
         emit(ImageUploadSuccessState());
+                emit(PostFetchSuccessState(posts: updatedPosts));
+
       } catch (e) {
         emit(ImageUploadFailureState());
       }
@@ -36,13 +41,28 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<FetchPostsEvent>((event, emit) async {
       emit(PostFetchProgressState());
       try {
-        List<FetchModel> posts = await PostApiService().postFetch();
-        print('recieved:$posts');
-
-        emit(PostFetchSuccessState(posts: posts));
-      } catch (e) {
+      List<AfterExecution> post = await PostApiService().postFetch();
+print('fetched posts:$post');
+if(post.isEmpty){
+  emit(PostFetchEmptyState());
+}else{
+        emit(PostFetchSuccessState(posts: post));
+      }} catch (e) {
         emit(PostFetchFailureState());
       }
     });
-  }
+
+    on<DeletePostEvent>((event, emit)async{
+        emit(PostDeleteProgressState());
+        try {
+          await PostApiService().deletePost(event.postId);
+          List<AfterExecution>updatedPosts=await PostApiService().postFetch();
+          emit(PostDeleteSuccessState());
+                    emit(PostFetchSuccessState(posts: updatedPosts));
+
+        } catch (e) {
+          emit(PostDeleteFailureState());
+        }
+    });
+  } 
 }

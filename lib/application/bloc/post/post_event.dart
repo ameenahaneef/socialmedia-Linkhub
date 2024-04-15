@@ -12,3 +12,7 @@ class UploadImagesEvent extends PostEvent {
 }
 
 class FetchPostsEvent extends PostEvent {}
+class DeletePostEvent extends PostEvent{
+  final String postId;
+  DeletePostEvent(this.postId);
+}

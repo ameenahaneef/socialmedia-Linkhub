@@ -19,8 +19,15 @@ class ImageUploadFailureState extends PostState {}
 class PostFetchProgressState extends PostState {}
 
 class PostFetchSuccessState extends PostState {
-  final List<FetchModel> posts;
+  final List<AfterExecution> posts;
   PostFetchSuccessState({required this.posts});
 }
 
 class PostFetchFailureState extends PostState {}
+class PostFetchEmptyState extends PostState{}
+
+class PostDeleteProgressState extends PostState {}
+
+class PostDeleteSuccessState extends PostState {}
+
+class PostDeleteFailureState extends PostState {}
