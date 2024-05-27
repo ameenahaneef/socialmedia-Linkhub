@@ -24,11 +24,11 @@ class SignupService {
             'Content-Type': 'application/json'
           },
           body: jsonEncode(body));
-      log('Error:${response.statusCode}');
-      log(response.body);
+       log('Error:${response.statusCode}');
+       log(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final token = jsonResponse['after execution']['token'];
+        final token = jsonResponse['after execution']['Token'] ?? '';
         return token;
       }
     } catch (e) {
@@ -70,16 +70,18 @@ class SignupService {
       log(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final accessToken = jsonResponse['after execution']['accesstoken'];
-        final refreshToken = jsonResponse['after execution']['refreshtoken'];
+        final accessToken = jsonResponse['after execution']['AccessToken'];
+        final refreshToken = jsonResponse['after execution']['RefreshToken'];
         storeTokens(accessToken, refreshToken);
         log(accessToken);
         log(refreshToken);
         await SharedPreferenceService.saveLoginStatus(true);
+        print('sdsfdds');
         return true;
       }
     } catch (e) {
-      log(e.toString());
+      log('🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️${e.toString()}');
+      print('login failed');
     }
     return false;
   }
@@ -96,7 +98,7 @@ class SignupService {
           body: jsonEncode(body));
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final token = jsonResponse['after execution']['token'];
+        final token = jsonResponse['after execution']['Token'];
         return token;
       }
     } catch (e) {
@@ -123,39 +125,54 @@ class SignupService {
         },
         body: jsonEncode(body),
       );
-      log(response.body);
-      log('${response.statusCode}');
+      log('🤦‍♂️🤦‍♂️🤦‍♂️${response.body}');
+      log('🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️${response.statusCode}');
     } catch (e) {
-      log(e.toString());
+      log('🤦‍♂️🤦‍♂️🤦‍♂️${e.toString()}');
     }
   }
 
   Future<ProfileModel?> fetchUser() async {
-    try {
-      final accessToken = await getAccessToken();
-      final refreshToken = await getRefreshToken();
-      log(accessToken!);
-
-      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.profileUrl}');
-      final response = await http.get(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': 'apikey@ciao',
-          'x-access-token': accessToken,
-          'x-refresh-token': '$refreshToken'
-        },
-      );
-      if (response.statusCode == 200) {
-        final jsonResponse = json.decode(response.body);
-
-        return ProfileModel.fromJson(jsonResponse);
-      } else {
-        log('failed to fetch ${response.statusCode}');
-      }
-    } catch (e) {
-      log('👀error ${e.toString()}');
+  try {
+    final accessToken = await getAccessToken();
+    final refreshToken = await getRefreshToken();
+    final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.profileUrl}');
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'apikey@ciao',
+        'x-access-token': accessToken!,
+        'x-refresh-token': '$refreshToken'
+      },
+    );
+    print('👌👌👌👌${response.body}');
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      final ProfileModel details = ProfileModel.fromJson(jsonResponse);
+      print('Parsed details: $details');
+      return details;
+    } else {
+      log('🍿🍿🍿🍿failed to fetch ${response.statusCode}');
     }
-    return null;
+  } catch (e) {
+    log('👀😒😒😒😒😒error ${e.toString()}');
   }
+  return null;
 }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

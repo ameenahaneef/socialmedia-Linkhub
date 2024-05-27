@@ -1,7 +1,7 @@
 const apikey = 'apikey@ciao';
 
 class EndPoints {
-  static String baseUrl = "http://ciao.ashkar.tech";
+  static String baseUrl = "https://ciao.ashkar.tech";
   static String signupUrl = "/signup";
   static String otpUrl = "/verify";
   static String loginUrl = "/login";
@@ -9,4 +9,15 @@ class EndPoints {
   static String resetPasswordUrl = "/resetpassword";
   static String profileUrl = "/profile";
   static String postAddUrl = "/post/";
+  static String globalPost="/explore";
+  static String followinglist="/profile/following";
+  static String followerslist="/profile/followers";
+  static String homepost="/post/userrelatedposts";
+  static String editProfile="/profile/edit";
+  static String accessRegenerator='/accessgenerator';
+  static String setProfile='/profile/setprofileimage';
+  static String addComment='/post/comment';
+  static String getComment='/post/comment/';
+  static String likePost='/post/like/';
+  static String socketBaseUrl="wss://ciao.ashkar.tech/chat/ws";
 }

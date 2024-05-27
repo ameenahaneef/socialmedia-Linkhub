@@ -1,7 +1,7 @@
 class FetchModel {
   int statusCode;
   String message;
-  List<AfterExecution> afterExecution;
+  List<After> afterExecution;
 
   FetchModel({
     required this.statusCode,
@@ -9,9 +9,9 @@ class FetchModel {
     required this.afterExecution,
   });
   factory FetchModel.fromJson(Map<String, dynamic> json) {
-    List<dynamic> afterExecutionList = json['after execution'] ?? [];
-    List<AfterExecution> afterExecutions =
-        afterExecutionList.map((e) => AfterExecution.fromJson(e)).toList();
+    List<dynamic> afterExecutionList = json['after execution']['PostsData'] ?? [];
+    List<After> afterExecutions =
+        afterExecutionList.map((e) => After.fromJson(e)).toList();
     return FetchModel(
         statusCode: json['status_code'] ?? 0,
         message: json['message'] ?? '',
@@ -19,43 +19,43 @@ class FetchModel {
   }
 }
 
-class AfterExecution {
+class After {
   int? userid;
   String? username;
   String? userprofileimageurl;
   int? postid;
-  bool? likeStatus;
+  //bool? likeStatus;
   String? caption;
-  String? likesCount;
-  String? commentsCount;
+  //String? likesCount;
+  //String? commentsCount;
   String? postAge;
   List<String>? mediaUrls;
 
-  AfterExecution({
+  After({
     this.userid,
     this.username,
     this.userprofileimageurl,
     this.postid,
-    this.likeStatus,
+    //this.likeStatus,
     this.caption,
-    this.likesCount,
-    this.commentsCount,
+    //this.likesCount,
+    //this.commentsCount,
     this.postAge,
     this.mediaUrls,
   });
-  factory AfterExecution.fromJson(Map<String, dynamic> json) {
-    return AfterExecution(
-        userid: json['userid'] ?? 0,
-        username: json['username'] ?? '',
-        userprofileimageurl: json['userprofileimageurl'] ?? '',
-        postid: json['postid'] ?? 0,
-        likeStatus: json['like_status'] ?? false,
-        caption: json['caption'] ?? '',
-        likesCount: json['likes_count'] ?? '',
-        commentsCount: json['comments_count'] ?? '',
-        postAge: json['post-age'] ?? '',
-        mediaUrls: json['media-urls'] != null
-            ? List<String>.from(json['media-urls'])
+  factory After.fromJson(Map<String, dynamic> json) {
+    return After(
+        userid: json['userId'] ?? 0,
+        username: json['UserName'] ?? '',
+        userprofileimageurl: json['UserProfileImageUrl'] ?? '',
+        postid: json['PostId'] ?? 0,
+        //likeStatus: json['like_status'] ?? false,
+        caption: json['Caption'] ?? '',
+        //likesCount: json['likes_count'] ?? '',
+        //commentsCount: json['comments_count'] ?? '',
+        postAge: json['PostAge'] ?? '',
+        mediaUrls: json['MediaUrl'] != null
+            ? List<String>.from(json['MediaUrl'])
             : []);
   }
 }

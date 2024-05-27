@@ -41,31 +41,35 @@ class PostApiService {
     }
   }
 
-  Future<List<AfterExecution>> postFetch() async {
+  Future<List<After>> postFetch({int limit = 10, int offset = 0}) async {
     try {
-      final accessToken = await getAccessToken();
-      final refreshToken = await getRefreshToken();
-      log(accessToken!);
-      log(refreshToken!);
+      final AccessToken = await getAccessToken();
+      final RefreshToken = await getRefreshToken();
+      log(AccessToken!);
+      log(RefreshToken!);
 
-      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
+
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}').replace(queryParameters: {
+        'limit':limit.toString(),
+        'offset':offset.toString()
+      });
       final response = await http.get(
         url,
         headers: {
           'x-api-key': 'apikey@ciao',
-          'x-access-token': accessToken,
-          'x-refresh-token': refreshToken
+          'x-access-token': AccessToken,
+          'x-refresh-token': RefreshToken
         },
       );
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        final List<dynamic> postData = jsonResponse['after execution'];
+        final List<dynamic> postData = jsonResponse['after execution']['PostsData'];
         if (postData.isEmpty) {
           log('nothing is available');
           return [];
         }
-        final List<AfterExecution> post = postData
-            .map((postJson) => AfterExecution.fromJson(postJson))
+        final List<After> post = postData
+            .map((postJson) => After.fromJson(postJson))
             .toList();
 
         log('❤️❤️❤️❤️${response.body}');
@@ -86,8 +90,7 @@ class PostApiService {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
 
-      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
-      final body = {"postid": postid};
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}$postid');
       final response = await http.delete(url,
           headers: {
             'Content-Type': 'application/json',
@@ -95,11 +98,11 @@ class PostApiService {
             'x-access-token': '$accessToken',
             'x-refresh-token': '$refreshToken'
           },
-          body: jsonEncode(body));
+         );
 
-      log(response.body);
+      log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
     } catch (e) {
-      log(e.toString());
+      log('🤦‍♂️🤦‍♂️🤦‍♂️🤦‍♂️${e.toString()}');
     }
   }
    Future<void> editCaption(String caption,String postid) async {
@@ -120,9 +123,59 @@ class PostApiService {
           },
           body: jsonEncode(body));
 
-      log(response.body);
+      log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
     } catch (e) {
-      log(e.toString());
+      log('🍿🍿${e.toString()}');
     }
   }
+
+
+
+ Future<List<After>> getUserPost( {required int userId,int limit = 12, int offset = 0}) async {
+    try {
+      final AccessToken = await getAccessToken();
+      final RefreshToken = await getRefreshToken();
+      log(AccessToken!);
+      log(RefreshToken!);
+       final url = Uri.parse('${EndPoints.baseUrl}/post?')
+        .replace(queryParameters: {
+          'limit': limit.toString(),
+          'offset': offset.toString(),
+          'userbid': userId.toString(),
+        });  
+
+      final response = await http.get(
+        url,
+        headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': AccessToken,
+          'x-refresh-token': RefreshToken
+        },
+      );
+      print('${response.statusCode}');
+      log('💕💕💕💕💕💕💕${response.body}');
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final List<dynamic> postData = jsonResponse['after execution']['PostsData'];
+        if (postData.isEmpty) {
+          log('nothing is available');
+          return [];
+        }
+        final List<After> post = postData
+            .map((postJson) => After.fromJson(postJson))
+            .toList();
+
+        log('❤️❤️❤️❤️${response.body}');
+        print('👀👀👀👀👀👀$post');
+
+        return post;
+      } else {
+        log('failed to fetch ${response.statusCode}');
+      }
+    } catch (e) {
+      log('🤣🤣👀error ${e.toString()}');
+    }
+    return [];
+  }
+
 }

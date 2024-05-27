@@ -5,3 +5,12 @@ void navigate(BuildContext context, Widget screen) {
     return screen;
   }));
 }
+
+void navigatePop(BuildContext context) {
+  Navigator.pop(context);
+}
+
+
+
+
+

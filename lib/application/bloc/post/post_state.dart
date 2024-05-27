@@ -19,7 +19,7 @@ class ImageUploadFailureState extends PostState {}
 class PostFetchProgressState extends PostState {}
 
 class PostFetchSuccessState extends PostState {
-  final List<AfterExecution> posts;
+  final List<After> posts;
   PostFetchSuccessState({required this.posts});
 }
 
@@ -29,7 +29,10 @@ class PostFetchEmptyState extends PostState {}
 
 class PostDeleteProgressState extends PostState {}
 
-class PostDeleteSuccessState extends PostState {}
+class PostDeleteSuccessState extends PostState {
+   final List<After> posts;
+  PostDeleteSuccessState({required this.posts});
+}
 
 class PostDeleteFailureState extends PostState {}
 
@@ -39,5 +42,6 @@ class CaptionEditSuccessState extends PostState {
   final String newCaption;
   CaptionEditSuccessState({required this.newCaption});
 }
-
 class CaptionEditFailureState extends PostState {}
+
+

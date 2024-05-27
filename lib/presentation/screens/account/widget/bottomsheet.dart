@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socialmedia/application/sharedpreference/sharedpreference.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/navigator.dart';
-import 'package:socialmedia/presentation/screens/login/login.dart';
+import 'package:socialmedia/presentation/screens/login/pages/login.dart';
 
 Future<dynamic> bottomsheet(BuildContext context) {
   return showModalBottomSheet(
@@ -45,7 +45,7 @@ Future<dynamic> bottomsheet(BuildContext context) {
                           );
                         });
                   },
-                  icon: const Icon(Icons.logout, color: backgroundColor))
+                  icon: const Icon(Icons.logout, color: black))
             ],
           ),
         );

@@ -31,7 +31,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       try {
         await PostApiService().postImage(caption, imagePaths);
-        List<AfterExecution> updatedPosts = await PostApiService().postFetch();
+        List<After> updatedPosts = await PostApiService().postFetch();
         emit(ImageUploadSuccessState());
         emit(PostFetchSuccessState(posts: updatedPosts));
        
@@ -43,7 +43,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     on<FetchPostsEvent>((event, emit) async {
       emit(PostFetchProgressState());
       try {
-        List<AfterExecution> post = await PostApiService().postFetch();
+        List<After> post = await PostApiService().postFetch();
         print('fetched posts:$post');
         if (post.isEmpty) {
           emit(PostFetchEmptyState());
@@ -59,10 +59,10 @@ class PostBloc extends Bloc<PostEvent, PostState> {
       emit(PostDeleteProgressState());
       try {
         await PostApiService().deletePost(event.postId);
-        List<AfterExecution> updatedPosts = await PostApiService().postFetch();
-        emit(PostDeleteSuccessState());
-        emit(PostFetchSuccessState(posts: updatedPosts));
-        accountBloc.add(PostDeletedEvent());
+        List<After> updatedPosts = await PostApiService().postFetch();
+        emit(PostDeleteSuccessState(posts: updatedPosts));
+        //emit(PostFetchSuccessState(posts: updatedPosts));
+        //accountBloc.add(PostDeletedEvent());
       } catch (e) {
         emit(PostDeleteFailureState());
       }
@@ -79,6 +79,10 @@ on<EditCaptionEvent>((event, emit) async{
   }
 
 });
+
+
+
+
   }
    
    

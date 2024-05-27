@@ -16,3 +16,8 @@ class ErrorState extends AccountState {
   final String error;
   ErrorState(this.error);
 }
+class ShowingPostState extends AccountState{
+  final ProfileModel profileModel;
+  ShowingPostState(this.profileModel);
+}
+class Edited extends AccountState{}

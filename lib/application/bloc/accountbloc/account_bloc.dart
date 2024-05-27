@@ -10,7 +10,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc() : super(AccountInitial()) {
     on<FetchUserDataEvent>((event, emit) async {
       emit(LoadingState());
-
       final ProfileModel? userProfile = await SignupService().fetchUser();
       if (userProfile != null) {
         emit(LoadedState(userProfile));
@@ -18,6 +17,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(ErrorState('failed to fetch user data'));
       }
     });
+
+
+   
     on<PostAddedEvent>((event, emit) async{
  if (state is LoadedState) {
         final currentState = state as LoadedState;
@@ -29,7 +31,6 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(LoadedState(updatedProfile));
       }
     });
-
     on<PostDeletedEvent>((event, emit)async{
  if (state is LoadedState) {
         final currentState = state as LoadedState;
@@ -41,5 +42,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
         emit(LoadedState(updatedProfile));
       }
     });
+on<ShowPostEvent>((event, emit) async{
+if(state is LoadedState){
+  emit(ShowingPostState((state as LoadedState).profileModel));
+}
+});
   }
 }

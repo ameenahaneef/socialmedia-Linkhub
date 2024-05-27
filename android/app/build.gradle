@@ -49,6 +49,16 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+    }
+    signingConfigs{
+        debug{
+            keyAlias 'androiddebugkey'
+            keyPassword 'ashkar'
+            storeFile file('mykeyss.jks')
+            storePassword 'ameena'
+        }
+
     }
 
     buildTypes {
