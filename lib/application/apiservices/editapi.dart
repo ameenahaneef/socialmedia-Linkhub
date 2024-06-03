@@ -36,7 +36,6 @@ class EditApi {
     }
   }
   Future<void>setProfileImage(String img)async{
-    print('€€€€€€€€€€function gets called');
     final url=Uri.parse('${EndPoints.baseUrl}${EndPoints.setProfile}');
     try {
        final accessToken = await getAccessToken();

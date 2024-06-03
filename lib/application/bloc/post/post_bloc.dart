@@ -61,8 +61,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         await PostApiService().deletePost(event.postId);
         List<After> updatedPosts = await PostApiService().postFetch();
         emit(PostDeleteSuccessState(posts: updatedPosts));
-        //emit(PostFetchSuccessState(posts: updatedPosts));
-        //accountBloc.add(PostDeletedEvent());
+        emit(PostFetchSuccessState(posts: updatedPosts));
+        accountBloc.add(PostDeletedEvent());
       } catch (e) {
         emit(PostDeleteFailureState());
       }

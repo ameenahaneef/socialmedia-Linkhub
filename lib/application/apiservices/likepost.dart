@@ -15,7 +15,6 @@ class LikeServices{
         'x-access-token': '$accessToken',
         'x-refresh-token': '$refreshToken',
       }); 
-      print('liked');
       print(response.statusCode);
     } catch (e) {
       log(e.toString());
@@ -32,10 +31,9 @@ class LikeServices{
         'x-access-token': '$accessToken',
         'x-refresh-token': '$refreshToken',
       }); 
-      print('unliked');
       print('😶‍🌫️${response.statusCode}');
     } catch (e) {
-      
+      log(e.toString());
     }
   }
 }

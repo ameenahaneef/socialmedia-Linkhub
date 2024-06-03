@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:socialmedia/application/models/commentmodel.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
 import 'package:socialmedia/core/endpoints.dart';
 import 'package:http/http.dart' as http;
-
 class CommentService {
   Future<void> addComment(int postId, String comment) async {
     print('function gets called');
@@ -49,7 +47,6 @@ class CommentService {
       log('Response status code: ${response.statusCode}');
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = json.decode(response.body);
-       // final AfterExecution afterExecution=AfterExecution.fromJson(responseBody['after execution']);
         final CommentModel commentModel=CommentModel.fromJson(responseBody);
         return commentModel;
       } else {
@@ -68,7 +65,7 @@ class CommentService {
     try {
        final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
-      final response = await http.get(
+      final response = await http.delete(
         url,
         headers: {
           'x-api-key': 'apikey@ciao',
@@ -83,6 +80,33 @@ class CommentService {
         log('comment deleted successfully');
       }else{
         log('failed to dlete');
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+
+  Future<void> editComment(int commentId,String commentText)async{
+    final url=Uri.parse('${EndPoints.baseUrl}${EndPoints.getComment}');
+    try {
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
+      final response = await http.patch(
+        url,
+        headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': '$accessToken',
+          'x-refresh-token': '$refreshToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'CommentId':commentId,'CommentText':commentText})
+      ); 
+      log(response.body);
+      if(response.statusCode==200){
+        print('edited successfully');
+      }else{
+        print('not edited');
       }
     } catch (e) {
       log(e.toString());

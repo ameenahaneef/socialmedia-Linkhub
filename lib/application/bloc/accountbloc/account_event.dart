@@ -17,7 +17,3 @@ class UnFollowUserEvent extends AccountEvent{
 }
 class ShowPostEvent extends AccountEvent{}
 
-// class EditProfile extends AccountEvent{
-//   final Profilee profile;
-//   EditProfile(this.profile);
-// }

@@ -24,12 +24,14 @@ class User {
   final int userId;
   final String name;
   final String username;
+  final String? userProfileImage;
  // final bool followingStatus;
 
   User({
     required this.userId,
     required this.name,
     required this.username,
+     this.userProfileImage
    // required this.followingStatus,
   });
 
@@ -38,6 +40,7 @@ class User {
       userId: json['UserId'] ?? 0,
       name: json['Name'] ?? '',
       username: json['UserName'] ?? '',
+      userProfileImage: json['ProfileImageURL']
       //followingStatus: json['following_status'] ?? false,
     );
   }

@@ -8,29 +8,23 @@ import 'package:http/http.dart' as http;
 class PostApiService {
   Future<void> postImage(String caption, List mediaUrls) async {
     final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
-
     try {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
       if (accessToken == null || refreshToken == null) {
         return;
       }
-
       final response = http.MultipartRequest('POST', url);
       response.headers['x-api-key'] = apikey;
       response.headers['x-access-token'] = accessToken;
       response.headers['x-refresh-token'] = refreshToken;
-
       response.fields['caption'] = caption;
-
       for (int i = 0; i < mediaUrls.length; i++) {
         var mediaUrl = mediaUrls[i];
         response.files
             .add(await http.MultipartFile.fromPath('media', mediaUrl));
       }
-
       final res = await response.send();
-
       if (res.statusCode == 200) {
         log('image uploaded succefully');
       } else {
@@ -47,9 +41,7 @@ class PostApiService {
       final RefreshToken = await getRefreshToken();
       log(AccessToken!);
       log(RefreshToken!);
-
-
-      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}').replace(queryParameters: {
+     final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}').replace(queryParameters: {
         'limit':limit.toString(),
         'offset':offset.toString()
       });
@@ -73,8 +65,6 @@ class PostApiService {
             .toList();
 
         log('❤️❤️❤️❤️${response.body}');
-        print('👀👀👀👀👀👀$post');
-
         return post;
       } else {
         log('failed to fetch ${response.statusCode}');
@@ -89,7 +79,6 @@ class PostApiService {
     try {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
-
       final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}$postid');
       final response = await http.delete(url,
           headers: {
@@ -99,7 +88,6 @@ class PostApiService {
             'x-refresh-token': '$refreshToken'
           },
          );
-
       log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
     } catch (e) {
       log('🤦‍♂️🤦‍♂️🤦‍♂️🤦‍♂️${e.toString()}');
@@ -109,7 +97,6 @@ class PostApiService {
     try {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
-
       final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}');
       final body = {
         "caption":caption,
@@ -122,7 +109,6 @@ class PostApiService {
             'x-refresh-token': '$refreshToken'
           },
           body: jsonEncode(body));
-
       log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
     } catch (e) {
       log('🍿🍿${e.toString()}');
@@ -143,7 +129,6 @@ class PostApiService {
           'offset': offset.toString(),
           'userbid': userId.toString(),
         });  
-
       final response = await http.get(
         url,
         headers: {
@@ -152,7 +137,6 @@ class PostApiService {
           'x-refresh-token': RefreshToken
         },
       );
-      print('${response.statusCode}');
       log('💕💕💕💕💕💕💕${response.body}');
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -167,7 +151,6 @@ class PostApiService {
 
         log('❤️❤️❤️❤️${response.body}');
         print('👀👀👀👀👀👀$post');
-
         return post;
       } else {
         log('failed to fetch ${response.statusCode}');

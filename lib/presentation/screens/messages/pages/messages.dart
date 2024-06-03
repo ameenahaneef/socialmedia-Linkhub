@@ -1,125 +1,140 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:socialmedia/application/bloc/chat/chat_bloc.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/core/navigator.dart';
 import 'package:socialmedia/presentation/screens/messages/pages/singlechat.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/io.dart';
+import 'package:socialmedia/presentation/screens/shimmer/shimmer.dart';
 
-class MessageScreen extends StatefulWidget {
-  final WebSocketChannel channel;
-  
-  const MessageScreen({super.key,required this.channel});
+class MessageScreen extends StatelessWidget {
+  const MessageScreen({super.key});
 
-  @override
-  State<MessageScreen> createState() => _MessageScreenState();
-}
-
-class _MessageScreenState extends State<MessageScreen> {
-  late bool _isConnected;
-  late WebSocketChannel _channel;
-  @override
-  void initState() {
-        super.initState();
-
-    _isConnected=false;
-    _channel=widget.channel;
-    _connectWebSocket();
+  String truncateWithEllipsis(int cutoff, String text) {
+    return (text.length <= cutoff) ? text : '${text.substring(0, cutoff)}...';
   }
 
+  String formatTime(String? timestamp) {
+    if (timestamp == null) return 'Invalid Time';
+    try {
+      String cleanedTimestamp = timestamp.split(' ').sublist(0, 2).join(' ');
+      DateTime dateTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss.SSS').parse(cleanedTimestamp);
+      return DateFormat('hh:mm a').format(dateTime);
+    } catch (e) {
+      return 'Invalid Time';
+    }
+  }
 
-void _connectWebSocket(){
-  _channel.stream.listen((message) {
-    setState(() {
-          _isConnected=true;
-
-    });
-   },
-   onDone: () {
-     setState(() {
-       _isConnected=false;
-     });
-   },
-   onError: (error){
-    setState(() {
-      _isConnected=false;
-    });
-   },
-   cancelOnError: true
-   
-   );
-   Future.delayed(Duration(seconds: 1),(){
-    setState(() {
-      _isConnected=_channel.closeCode==null;
-    });
-   }); 
-}
-
-
- 
- 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    context.read<ChatBloc>().add(FetchSummary());
+    return Scaffold(
       backgroundColor: black,
       appBar: AppBar(
-        
         automaticallyImplyLeading: false,
-        title: Text(_isConnected?'connected':'notconnected',style:style,),
-        backgroundColor: black,
-        
+        title: Text(
+          'Messages',
+          style: nostyle,
         ),
+        backgroundColor: black,
+      ),
       body: Center(
-        child: ListView.separated(
-          
-          separatorBuilder: (context, index) {
-            return const SizedBox(height: 
-            1 ,);
-          },
-          itemCount: 10,
-          itemBuilder:(context, index) {
-          
-          return GestureDetector(
-            onTap: () {
-              navigate(context, SingleChat());
-            },
-      child: Padding(
-        padding: const EdgeInsets.only(top:10.0,left:10,right: 8),
-        child: Row(children: [
-        
-        Container(
-            width: 80,
-            height: 70 ,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: kgrey,
-              
-            ),
-          ),
-          kwidth,
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-        Text('Name',style: nostyle,),
-           Text('good morning',style: nostyle,),
-        
-            ],
-          )),
-            Text('12.00pm',style: nostyle,)
-        
-        
-        ],),
-      )
-          ,
-       
-          );
-        },),
+        child: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+          if (state is SummaryLoading) {
+            return ShimmerList();
+            // const Center(
+            //   child: CircularProgressIndicator(),
+            // );
+          } else if (state is SummaryEmpty) {
+            return Center(
+              child: Text(
+                'No recent chats',
+                style: nostyle,
+              ),
+            );
+          } else if (state is SummarySuccess) {
+            final sortedChats = List.from(state.chats)
+              ..sort((a, b) {
+                try {
+                  DateTime dateA = DateFormat('yyyy-MM-dd HH:mm:ss.SSS')
+                      .parse(a.lastMessageTimeStamp, true)
+                      .toLocal();
+                  DateTime dateB = DateFormat('yyyy-MM-dd HH:mm:ss.SSS')
+                      .parse(b.lastMessageTimeStamp, true)
+                      .toLocal();
+                  return dateB.compareTo(dateA);
+                } catch (e) {
+                  return 0;
+                }
+              });
+
+            return ListView.separated(
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  height: 1,
+                );
+              },
+              itemCount: sortedChats.length,
+              itemBuilder: (context, index) {
+                final chat = sortedChats[index];
+                final time = chat.lastMessageTimeStamp;
+                final formattedtime = formatTime(time);
+                final truncatedMessage =
+                    truncateWithEllipsis(25, chat.lastMessageContent);
+                return GestureDetector(
+                  onTap: () async {
+                    navigate(
+                        context,
+                        SingleChat(
+                          id: chat.userId,
+                          userName: chat.userName,
+                          userProfileUrl: chat.userProfileUrl,
+                        ));
+                  },
+                  child: Padding(
+                    padding:
+                         EdgeInsets.only(top: 10.0, left: 10, right: 8),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundColor: korange,
+                          backgroundImage: NetworkImage(chat.userProfileUrl ??
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chat.userName,
+                              style: nostyle,
+                            ),
+                            Text(
+                              truncatedMessage,
+                              style: nostyle,
+                            ),
+                          ],
+                        )),
+                        Text(
+                          formattedtime,
+                          style: nostyle,
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          return const SizedBox();
+        }),
       ),
     );
   }
 }
-
-
-
-
-

@@ -9,9 +9,9 @@ import 'package:socialmedia/core/constants.dart';
 class UserPostDetails extends StatelessWidget {
   final After post;
   const UserPostDetails({super.key, required this.post});
-
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: black,
       appBar: AppBar(
@@ -21,15 +21,22 @@ class UserPostDetails extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
-              width: double.infinity,
-              height: 450,
-              color: kwhite.withOpacity(.8),
+height: 430,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                  color: kgrey.withOpacity(0.3)),
               child: Column(children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top:8.0,left: 30),
                   child: ListTile(
-                      leading: const CircleAvatar(),
-                      title:  Text(post.username!),
+                      // leading: CircleAvatar(
+                      //   backgroundImage:
+                      //       NetworkImage(post.userprofileimageurl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'),
+                      // ),
+                      title: Text(
+                        post.username!,
+                        style: headStyle,
+                      ),
                       trailing: IconButton(
                           onPressed: () {
                             showDialog(
@@ -50,8 +57,9 @@ class UserPostDetails extends StatelessWidget {
                                           context.read<PostBloc>().add(
                                               DeletePostEvent(
                                                   '${post.postid}'));
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
+                                           Navigator.pop(context);
+
+                                           Navigator.pop(context);
                                         },
                                         child: const Text('ok'))
                                   ],
@@ -61,19 +69,19 @@ class UserPostDetails extends StatelessWidget {
                           },
                           icon: const Icon(
                             Icons.delete,
-                            color:black,
+                            color: kwhite,
                           ))),
                 ),
                 CarouselSlider(
                     items: post.mediaUrls!.map((url) {
                       return Container(
                         margin: const EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Image.network(
-                          url,
-                          fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     }).toList(),
@@ -97,7 +105,7 @@ class UserPostDetails extends StatelessWidget {
                   );
                 }
               }),
-              post.caption != null
+              post.caption != null && post.caption!.isNotEmpty
                   ? IconButton(
                       onPressed: () {
                         showDialog(

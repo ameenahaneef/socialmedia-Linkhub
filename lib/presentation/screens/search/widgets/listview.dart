@@ -14,10 +14,8 @@ class ListviewSearch extends StatelessWidget {
    
   @override
   Widget build(BuildContext context) {
-     print('User List Length: ${userList.length}');
      if(userList.isEmpty){
-      print('emptyyyyyyy');
-      return Center(child: Text('no'),);
+      return const Center(child: Text('no'),);
      }else{
     return ListView.builder(
       itemCount:userList.length,
@@ -26,19 +24,19 @@ class ListviewSearch extends StatelessWidget {
           return ListTile(
             onTap: () {
              Navigator.push(context, MaterialPageRoute(builder: (context){
-              return PeopleDetails(userId: user.userId);
+              return PeopleDetails(userId: user.userId,name: user.name,);
              }));       
             },
-            leading: const CircleAvatar(
+            leading:  CircleAvatar(
               radius: 30,
-              backgroundColor: kgrey,
-              child: Image(
-                image: AssetImage(
-                  'assets/images/[removal.ai]_da4a22d4-3aa7-4812-ac4e-aead220b7375-screenshot-2024-03-26-192518.png',
-                ),
-                fit: BoxFit.cover,
+              backgroundColor: korange,
+             
+                backgroundImage:user.userProfileImage!=null&&user.userProfileImage!.isNotEmpty? NetworkImage(user.userProfileImage!) as ImageProvider:
+                const AssetImage('assets/images/download.png')
+                  //'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s',
+               
               ),
-            ),
+            
             title: 
             Text(
              user.name,

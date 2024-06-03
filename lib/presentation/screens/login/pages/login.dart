@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/core/constants.dart';
@@ -114,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '  or continue with  ',
+                          '  welcomee  ',
                           style: nostyle,
                         ),
                         Expanded(
@@ -126,28 +124,28 @@ class LoginScreen extends StatelessWidget {
                     height20,
                     SizedBox(
                       height: 40,
-                      child: GestureDetector(
-                        onTap: ()async {
-                         try {
-                           final GoogleSignInAccount? googleUser=await _googleSignIn.signIn();
-                           if(googleUser!=null){
-                            final String email=googleUser.email;
-                            final String idToken=googleUser.id;
-                            print('signed in with $email');
-                            print('id token is $idToken');
+                      // child: GestureDetector(
+                      //   onTap: ()async {
+                      //    try {
+                      //      final GoogleSignInAccount? googleUser=await _googleSignIn.signIn();
+                      //      if(googleUser!=null){
+                      //       final String email=googleUser.email;
+                      //       final String idToken=googleUser.id;
+                      //       print('signed in with $email');
+                      //       print('id token is $idToken');
 
-                           }else{
-                            print('sign in failed');
-                           }
-                         }on PlatformException 
+                      //      }else{
+                      //       print('sign in failed');
+                      //      }
+                      //    }on PlatformException 
                          
-                          catch (e) {
-                           print('platformexception during .......${e.message}');
-                         }
-                        },
-                        child: Image.asset(
-                            'assets/images/[removal.ai]_f9043f7d-ee3c-4038-a825-c0e8a5ede24e-kisspng-google-icon-5d4175d6037a16-4552672815645710940143.png'),
-                      ),
+                      //     catch (e) {
+                      //      print('platformexception during .......${e.message}');
+                      //    }
+                      //   },
+                      //   child: Image.asset(
+                      //       'assets/images/[removal.ai]_f9043f7d-ee3c-4038-a825-c0e8a5ede24e-kisspng-google-icon-5d4175d6037a16-4552672815645710940143.png'),
+                      // ),
                     )
                   ]),
                 ))

@@ -76,12 +76,10 @@ class SignupService {
         log(accessToken);
         log(refreshToken);
         await SharedPreferenceService.saveLoginStatus(true);
-        print('sdsfdds');
         return true;
       }
     } catch (e) {
       log('🤦‍♀️🤦‍♀️🤦‍♀️🤦‍♀️${e.toString()}');
-      print('login failed');
     }
     return false;
   }
@@ -146,11 +144,12 @@ class SignupService {
         'x-refresh-token': '$refreshToken'
       },
     );
-    print('👌👌👌👌${response.body}');
     if (response.statusCode == 200) {
+      print('${response.statusCode}');
       final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       final ProfileModel details = ProfileModel.fromJson(jsonResponse);
-      print('Parsed details: $details');
+      final userId=details.afterExecution!.id;
+          await SharedPreferenceService.saveUserId(userId);
       return details;
     } else {
       log('🍿🍿🍿🍿failed to fetch ${response.statusCode}');

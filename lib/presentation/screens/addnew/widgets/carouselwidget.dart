@@ -31,7 +31,7 @@ class Carousel extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                       image: DecorationImage(
                         image: FileImage(File(path)),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   );

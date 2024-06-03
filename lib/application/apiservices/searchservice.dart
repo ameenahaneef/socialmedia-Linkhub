@@ -32,7 +32,6 @@ class SearchApiService {
         log('failed to fetch ${response.statusCode}');
       }
     } catch (e) {
-      print('oooooo');
       log(e.toString());
     }
     return [];
@@ -64,7 +63,6 @@ return userList;
 
   Future <PeopleAfter?> getPeopleProfile(int id)async{
     final url=Uri.parse('${EndPoints.baseUrl}/explore/profile/$id');
-    print(url);
     try {
        final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
@@ -79,10 +77,8 @@ return userList;
         final user=jsonResponse['after execution'] ;
 if(user!=null){
   final PeopleAfter userss=PeopleAfter.fromJson(user);
-
         print('💕💕💕💕$userss');
         return userss;
-
       }else{
         log('failed.statuscode${response.statusCode}');
       }

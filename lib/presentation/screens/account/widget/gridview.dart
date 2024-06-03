@@ -31,8 +31,8 @@ class GridviewBloc extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 8.0,
-                  mainAxisSpacing: 8.0),
+                  crossAxisSpacing: 4.0,
+                  mainAxisSpacing: 4.0),
               itemCount: state.posts.length,
               itemBuilder: (context, index) {
                 final post = state.posts[index];
@@ -56,7 +56,6 @@ class GridviewBloc extends StatelessWidget {
                             width: 200,
                             height: 200,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                   image: NetworkImage(mediaUrl.first),
                                   fit: BoxFit.fill,
@@ -104,4 +103,5 @@ class GridviewBloc extends StatelessWidget {
       },
     );
   }
+  
 }

@@ -41,8 +41,10 @@ dependencies:
   http: ^1.2.1
   http_parser: ^4.0.2
   image_picker: ^1.0.7
+  intl: ^0.19.0
   json_annotation: ^4.8.1
   like_button: ^2.0.5
+  share_plus: ^9.0.0
   shared_preferences: ^2.2.2
   shimmer: ^3.0.0
   web_socket_channel: 2.4.5
@@ -74,6 +76,7 @@ flutter:
     - assets/images/[removal.ai]_e9c280db-4b6c-43c6-8755-cf664c1a382e-screenshot-2024-03-30-175828.png
     - assets/images/young-happy-businesswoman-wearing-headset-waving-while-video-conference-office.jpg
     - assets/images/young-lady-with-deep-green-eyes-long-brown-hair.jpg
+    - assets/images/download.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see

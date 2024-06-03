@@ -49,8 +49,7 @@ class ProfileSetting extends StatelessWidget {
                   decoration: BoxDecoration(color: korange.withOpacity(0.3),borderRadius: BorderRadius.circular(30)),
                   width: 400,
                   height: 400,
-                  //color: kgrey,
-                  child: Padding(
+                                    child: Padding(
                     padding: const EdgeInsets.only(top:40.0,left: 20,right: 20),
                     child: Column(
                       children: [

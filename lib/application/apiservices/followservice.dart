@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 
 class FollowService {
   Future<Follow?> followUsers(int id) async {
-    print('ameena');
     final url = Uri.parse('${EndPoints.baseUrl}/relation/follow/$id');
     try {
       final accessToken = await getAccessToken();
@@ -19,7 +18,6 @@ class FollowService {
         'x-access-token': '$accessToken',
         'x-refresh-token': '$refreshToken',
       });
-      print('archana');
       log(response.statusCode);
       print('🤦‍♀️🤦‍♀️Response Status Code: ${response.statusCode}');
       if (response.statusCode == 200) {

@@ -13,17 +13,17 @@ class GridviewSearch extends StatelessWidget {
       if (state is PostLoaded) {
         return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
+                crossAxisCount: 3, mainAxisSpacing: 6, crossAxisSpacing: 6),
             itemCount: state.posts.length,
             itemBuilder: (BuildContext context, int index) {
               final posts = state.posts[index];
               return GestureDetector(
                 onTap: () {
-                  navigate(context,UserPostDetails(post: posts));
+                  navigate(context,UserPostDetails(post: posts,));
                 },
                 child: Container(  
                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(6),
                       image: DecorationImage(
                           image: NetworkImage(posts.mediaUrls!.first),
                           fit: BoxFit.cover)),
@@ -31,7 +31,7 @@ class GridviewSearch extends StatelessWidget {
               );
             });
       }
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     });
   }
 }

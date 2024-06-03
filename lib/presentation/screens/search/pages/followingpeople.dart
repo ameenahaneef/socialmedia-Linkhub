@@ -46,27 +46,21 @@ class FollowingList extends StatelessWidget {
                   height: 80,
                   child: ListTile(
                     onTap: () {
-                      navigate(context, PeopleDetails(userId: user.userId));
+                      navigate(context, PeopleDetails(userId: user.userId,name: user.name,));
                     },
                     leading: CircleAvatar(
-                      backgroundColor: korange,
+                      backgroundImage: NetworkImage(user.profileImageUrl??'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'),
                       radius: 40,
-                      child: 
-                      const Icon(
-                        Icons.person,
-                        color: kwhite,
-                        size: 40,
-                      ),
+                      
                     ),
                     title: Text(
                       user.name,
-                      style: nostyle,
+                      style: headStyle,
                     ),
                     subtitle: Text(
                       user.username,
-                      style: nostyle,
+                      style: TextStyle(color: kwhite.withOpacity(0.6)),
                     ),
-                    //   trailing: ElevatedButton(onPressed: (){}, child: Text('Following'),style: buttonstyle,),
                   ),
                 );
               },

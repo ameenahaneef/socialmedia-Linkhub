@@ -8,11 +8,10 @@ import 'package:socialmedia/core/navigator.dart';
 import 'package:socialmedia/presentation/screens/mainhomee/widget/commentsheet.dart';
 import 'package:socialmedia/presentation/screens/search/pages/peopledetails.dart';
 
-class listview extends StatelessWidget {
-  const listview({
+class Listview extends StatelessWidget {
+  const Listview({
     super.key,
   });
-  
   @override
   Widget build(BuildContext context) {
     context.read<HomeBloc>().add(FetchHomeDetails());
@@ -38,7 +37,7 @@ class listview extends StatelessWidget {
               final post = state.posts[index];
               return Container(
                 decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.4),
+                    color: Colors.grey.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(30)),
                 height: 460,
                 margin: const EdgeInsets.all(5),
@@ -49,28 +48,34 @@ class listview extends StatelessWidget {
                           top: 18.0, left: 18.0, bottom: 10.0),
                       child: GestureDetector(
                         onTap: () {
-                          navigate(
-                              context, PeopleDetails(userId: post.userId));
+                          navigate(context, PeopleDetails(userId: post.userId,name: post.userName,));
                         },
                         child: Row(
                           children: [
+                            // CircleAvatar(
+                            //   radius: 20,
+                            //   //backgroundColor: korange,
+                            //   backgroundImage: NetworkImage(post!
+                            //           .userprofileimageurl ??
+                            //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'),
+                            // ),
                             CircleAvatar(
-                              radius: 20,
-                              backgroundColor: korange,
-                              backgroundImage: NetworkImage(post!
-                                      .userprofileimageurl ??
-                                  'https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png'),
-                            ),
+  radius: 20,
+  backgroundImage: post?.userprofileimageurl != null && post!.userprofileimageurl!.isNotEmpty
+      ? NetworkImage(post.userprofileimageurl!)
+      : const AssetImage('assets/images/download.png') as ImageProvider,
+),
                             kwidth,
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  post.userName,
-                                  style: nostyle,
+                                  post!.userName,
+                                  style: headStyle,
                                 ),
                                 Text(
                                   post.postAge,
-                                  style: nostyle,
+                                  style: dateStyle,
                                 )
                               ],
                             ),
@@ -88,43 +93,44 @@ class listview extends StatelessWidget {
                             width: 330,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
-                                image: DecorationImage(image: NetworkImage(post.mediaUrl.first),fit: BoxFit.cover)
-                                ),
-                            
-                            // child: Image(
-                            //   image: NetworkImage(post.mediaUrl.first),
-                            //   fit: BoxFit.cover,
-                            // ),
+                                image: DecorationImage(
+                                    image: NetworkImage(post.mediaUrl.first),
+                                    fit: BoxFit.cover)),
                           )),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(18.0),
+                      padding: const EdgeInsets.all(18.0),
                       child: Column(
                         children: [
                           Row(
                             children: [
                               BlocBuilder<LikeBloc, LikeState>(
                                 builder: (context, state) {
-                                  bool isLiked=post.likeStatus??false;
-                                  int likeCount=post.likesCount??0;
+                                  bool isLiked = post.likeStatus ?? false;
+                                  int likeCount = post.likesCount ?? 0;
                                   return Row(
                                     children: [
                                       IconButton(
                                           onPressed: () {
-                                            if(isLiked){
-                                              context.read<LikeBloc>().add(UnLikedEvent(post.postId, likeCount));
-                                              post.likeStatus=false;
-                                              post.likesCount=likeCount-1;
-                                              
-                                            }else{
-                                              context.read<LikeBloc>().add(LikedEvent(post.postId, likeCount));
-                                              post.likeStatus=true;
-                                              post.likesCount=likeCount+1;
+                                            if (isLiked) {
+                                              context.read<LikeBloc>().add(
+                                                  UnLikedEvent(
+                                                      post.postId, likeCount));
+                                              post.likeStatus = false;
+                                              post.likesCount = likeCount - 1;
+                                            } else {
+                                              context.read<LikeBloc>().add(
+                                                  LikedEvent(
+                                                      post.postId, likeCount));
+                                              post.likeStatus = true;
+                                              post.likesCount = likeCount + 1;
                                             }
                                           },
                                           icon: Icon(
                                             Icons.favorite,
-                                            color:post.likeStatus==true?korange:kgrey,
+                                            color: post.likeStatus == true
+                                                ? Colors.red
+                                                : kgrey,
                                           )),
                                       Text(
                                         '${post.likesCount}',
@@ -153,9 +159,15 @@ class listview extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Text(
-                            post.caption!,
-                            style: nostyle,
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Text(
+                                post.caption!,
+                                style: nostyle,
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -167,11 +179,7 @@ class listview extends StatelessWidget {
           );
         }
         return Center(
-            child: Container(
-          width: 100,
-          height: 100,
-          color: kgrey,
-        ));
+            child: Text('Server Error',style: nostyle,));
       },
     );
   }

@@ -4,7 +4,7 @@ import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/presentation/screens/mainhomee/widget/listview.dart';
 
 class HomeMain extends StatelessWidget {
-  const HomeMain({Key? key});
+   const HomeMain({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class HomeMain extends StatelessWidget {
       backgroundColor: black,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 25, left: 8.0, right: 10.0),
+          padding: const EdgeInsets.only(top: 25, left: 8.0, right: 10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -20,7 +20,7 @@ class HomeMain extends StatelessWidget {
                 'LinkHub',
                 style: style,
               ),
-              listview(),
+              const Listview(),
             ],
           ),
         ),

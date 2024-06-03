@@ -20,4 +20,6 @@ class EndPoints {
   static String getComment='/post/comment/';
   static String likePost='/post/like/';
   static String socketBaseUrl="wss://ciao.ashkar.tech/chat/ws";
+  static String chatSummary='/chat/recentchatprofiles';
+  static String oneToOneChat='/chat/onetoonechats/';
 }

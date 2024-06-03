@@ -53,7 +53,7 @@ class AfterExecution {
   });
   factory AfterExecution.fromJson(Map<String, dynamic> json) {
     return AfterExecution(
-id:json['userid']??0,
+id:json['UserId']??0,
         name: json['Name']??'',
         username: json['UserName']??'',
         bio: json['Bio']??'',
