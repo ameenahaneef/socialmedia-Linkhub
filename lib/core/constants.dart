@@ -22,6 +22,10 @@ TextStyle dateStyle= TextStyle(color: kwhite.withOpacity(0.7),fontSize: 10);
 TextStyle blackStyle=TextStyle(color: black,fontSize: 20,fontWeight: FontWeight.bold); 
 TextStyle blackheadStyle=const TextStyle(color: black,fontSize: 15,fontWeight: FontWeight.bold);
 TextStyle blackdateStyle= TextStyle(color: black,fontSize: 10);
+TextStyle messegeStyle=TextStyle(color: kwhite.withOpacity(0.7),fontSize: 15);
+TextStyle styleoswald = GoogleFonts.oswald(
+    textStyle: const TextStyle(
+        color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold));
 
 
 final buttonstyle = ElevatedButton.styleFrom(

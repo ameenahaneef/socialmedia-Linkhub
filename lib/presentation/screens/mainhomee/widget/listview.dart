@@ -48,23 +48,25 @@ class Listview extends StatelessWidget {
                           top: 18.0, left: 18.0, bottom: 10.0),
                       child: GestureDetector(
                         onTap: () {
-                          navigate(context, PeopleDetails(userId: post.userId,name: post.userName,));
+                          navigate(
+                              context,
+                              PeopleDetails(
+                                userId: post.userId,
+                                name: post.userName,
+                              ));
                         },
                         child: Row(
                           children: [
-                            // CircleAvatar(
-                            //   radius: 20,
-                            //   //backgroundColor: korange,
-                            //   backgroundImage: NetworkImage(post!
-                            //           .userprofileimageurl ??
-                            //       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQttE9sxpEu1EoZgU2lUF_HtygNLCaz2rZYHg&s'),
-                            // ),
                             CircleAvatar(
-  radius: 20,
-  backgroundImage: post?.userprofileimageurl != null && post!.userprofileimageurl!.isNotEmpty
-      ? NetworkImage(post.userprofileimageurl!)
-      : const AssetImage('assets/images/download.png') as ImageProvider,
-),
+                              radius: 20,
+                              backgroundImage:
+                                  post?.userprofileimageurl != null &&
+                                          post!.userprofileimageurl!.isNotEmpty
+                                      ? NetworkImage(post.userprofileimageurl!)
+                                      : const AssetImage(
+                                              'assets/images/download.png')
+                                          as ImageProvider,
+                            ),
                             kwidth,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +181,10 @@ class Listview extends StatelessWidget {
           );
         }
         return Center(
-            child: Text('Server Error',style: nostyle,));
+            child: Text(
+          'Server Error',
+          style: nostyle,
+        ));
       },
     );
   }

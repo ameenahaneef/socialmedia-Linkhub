@@ -5,7 +5,7 @@ const FlutterSecureStorage _storage = FlutterSecureStorage();
 const String accessTokenKey = 'AccessToken';
 const String refreshTokenKey = 'RefreshToken';
 
-void storeTokens(String accessToken, String refreshToken) async {
+Future<void> storeTokens(String accessToken, String refreshToken) async {
   await _storage.write(key: accessTokenKey, value: accessToken);
   await _storage.write(key: refreshTokenKey, value: refreshToken);
 }

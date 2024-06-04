@@ -39,19 +39,3 @@ class HomeMain extends StatelessWidget {
 
 
 
-
-//  height20,
-            //   SizedBox(
-            //     height: 140,
-            //     child: ListView.builder(
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: 10,
-            //       itemBuilder: (context, index) {
-            //         if (index == 0) {
-            //           return const userstatus();
-            //         } else {
-            //           return card();
-            //         }
-            //       },
-            //     ),
-            //   ),

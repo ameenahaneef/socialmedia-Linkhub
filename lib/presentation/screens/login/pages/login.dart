@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/core/navigator.dart';
@@ -9,11 +8,11 @@ import 'package:socialmedia/presentation/screens/login/widget/formfield.dart';
 import 'package:socialmedia/presentation/screens/signup/pages/signup.dart';
 
 class LoginScreen extends StatelessWidget {
-  final GoogleSignIn _googleSignIn=GoogleSignIn(clientId: 'http://911150474747-16l271tmjuihvbjee1jn80skms874su5.apps.googleusercontent.com',
-  scopes: [
-    'email',
-    'profile'
-  ]);
+  // final GoogleSignIn _googleSignIn=GoogleSignIn(clientId: 'http://911150474747-16l271tmjuihvbjee1jn80skms874su5.apps.googleusercontent.com',
+  // scopes: [
+  //   'email',
+  //   'profile'
+  // ]);
   LoginScreen({super.key});
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -122,31 +121,7 @@ class LoginScreen extends StatelessWidget {
                       ],
                     ),
                     height20,
-                    SizedBox(
-                      height: 40,
-                      // child: GestureDetector(
-                      //   onTap: ()async {
-                      //    try {
-                      //      final GoogleSignInAccount? googleUser=await _googleSignIn.signIn();
-                      //      if(googleUser!=null){
-                      //       final String email=googleUser.email;
-                      //       final String idToken=googleUser.id;
-                      //       print('signed in with $email');
-                      //       print('id token is $idToken');
-
-                      //      }else{
-                      //       print('sign in failed');
-                      //      }
-                      //    }on PlatformException 
-                         
-                      //     catch (e) {
-                      //      print('platformexception during .......${e.message}');
-                      //    }
-                      //   },
-                      //   child: Image.asset(
-                      //       'assets/images/[removal.ai]_f9043f7d-ee3c-4038-a825-c0e8a5ede24e-kisspng-google-icon-5d4175d6037a16-4552672815645710940143.png'),
-                      // ),
-                    )
+                    
                   ]),
                 ))
           ],

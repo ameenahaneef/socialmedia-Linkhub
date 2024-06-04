@@ -21,7 +21,12 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('LinkHub', style: style),
+            Text.rich(
+              TextSpan(children:[
+                TextSpan(text: 'Link',style: style),
+                TextSpan(text: 'Hub',style: style.copyWith(color: orange))
+              ]
+              )),
           ],
         ),
       ),

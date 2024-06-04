@@ -113,11 +113,11 @@ class MessageScreen extends StatelessWidget {
                           children: [
                             Text(
                               chat.userName,
-                              style: nostyle,
+                              style: headStyle,
                             ),
                             Text(
                               truncatedMessage,
-                              style: nostyle,
+                              style:messegeStyle,
                             ),
                           ],
                         )),

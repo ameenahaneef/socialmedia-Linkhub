@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:socialmedia/application/apiservices/accessregenerator.dart';
 import 'package:socialmedia/application/models/chatmodel.dart';
 import 'package:socialmedia/application/models/newchat.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
@@ -16,15 +17,13 @@ class ChatServices {
         headers: {
           'x-api-key': 'apikey@ciao',
           'x-access-token': '$accessToken',
-          'x-refresh-token': '$refreshToken',
+         // 'x-refresh-token': '$refreshToken',
           'Content-Type': 'application/json',
         },
       );
       if (response.statusCode == 200) {
         print('👽👽chat fetched');
-      } else {
-        print('nottttttt');
-      }
+      
       log('👽👽👽👽👽${response.statusCode}');
       final jsonResponse = json.decode(response.body);
       final List<dynamic> data = jsonResponse['after execution']['ActualData'];
@@ -32,7 +31,29 @@ class ChatServices {
           data.map((data) => Chatsummary.fromJson(data)).toList();
       log('💕💕💕💕${response.body}');
       return chats;
-    } catch (e) {
+    }else if(response.statusCode==401||response.statusCode==400){
+      final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+      if(newAccessToken.isNotEmpty){
+        await storeTokens(newAccessToken, refreshToken);
+        final response=await http.get(url,
+         headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': newAccessToken,
+          //'x-refresh-token': '$refreshToken',
+          'Content-Type': 'application/json',
+        },);
+        if(response.statusCode==200){
+        final jsonResponse = json.decode(response.body);
+      final List<dynamic> data = jsonResponse['after execution']['ActualData'];
+      final List<Chatsummary> chats =
+          data.map((data) => Chatsummary.fromJson(data)).toList();
+      log('💕💕💕💕${response.body}');
+      return chats;
+        }
+      }
+    }
+    
+     }catch (e) {
       log(e.toString());
     }
     return [];
@@ -51,22 +72,41 @@ class ChatServices {
         headers: {
           'x-api-key': 'apikey@ciao',
           'x-access-token': '$accessToken',
-          'x-refresh-token': '$refreshToken',
+          //'x-refresh-token': '$refreshToken',
           'Content-Type': 'application/json',
         },
       );
       log(response.body);
       if (response.statusCode == 200) {
         print('successs/......');
-      } else {
-        print('not successsssss');
-      }
+      
       final jsonResponse = json.decode(response.body);
       final List<dynamic> chat = jsonResponse['after execution']['Chat'];
       final List<ChatMessage> chats =
           chat.map((chat) => ChatMessage.fromJson(chat)).toList();
       return chats.reversed.toList();
-    } catch (e) {
+    }else if(response.statusCode==401||response.statusCode==400){
+      final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+      if(newAccessToken.isNotEmpty){
+        await storeTokens(newAccessToken, refreshToken);
+        final response=await http.get(url,headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': newAccessToken,
+          //'x-refresh-token': '$refreshToken',
+          'Content-Type': 'application/json',
+        });
+        if(response.statusCode==200){
+          final jsonResponse = json.decode(response.body);
+      final List<dynamic> chat = jsonResponse['after execution']['Chat'];
+      final List<ChatMessage> chats =
+          chat.map((chat) => ChatMessage.fromJson(chat)).toList();
+      return chats.reversed.toList();
+        }
+      }
+    }else{print('not successss');
+    }
+    
+     }catch (e) {
       log(e.toString());
     }
     return [];

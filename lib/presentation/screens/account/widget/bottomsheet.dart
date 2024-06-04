@@ -5,6 +5,7 @@ import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
 import 'package:socialmedia/core/navigator.dart';
 import 'package:socialmedia/presentation/screens/login/pages/login.dart';
+import 'package:socialmedia/presentation/screens/messages/pages/messages.dart';
 import 'package:socialmedia/presentation/screens/settings/about.dart';
 import 'package:socialmedia/presentation/screens/settings/privacypolicy.dart';
 
@@ -25,6 +26,13 @@ Future<dynamic> bottomsheet(BuildContext context) {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
+                 ListTile(
+                  onTap: () {
+                    navigate(context, const MessageScreen());
+                  },
+                  leading: const Icon(Icons.message,color: kwhite,),
+                  title:  Text('Messages',style: nostyle,),
+                ),
                 ListTile(
                   onTap: () {
                     navigate(context, const About());

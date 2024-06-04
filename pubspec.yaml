@@ -50,7 +50,7 @@ dependencies:
   web_socket_channel: 2.4.5
 
 dev_dependencies:
-  build_runner: ^2.4.9
+  build_runner: ^2.4.9  
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
@@ -71,11 +71,7 @@ flutter:
     - assets/images/Screenshot 2024-03-30 175828.png
     - assets/images/[removal.ai]_b1934004-b13d-49d0-8db5-f8d0882759c9-screenshot-2024-03-30-221955.png
     - assets/images/[removal.ai]_da4a22d4-3aa7-4812-ac4e-aead220b7375-screenshot-2024-03-26-192518.png
-    - assets/images/[removal.ai]_f9043f7d-ee3c-4038-a825-c0e8a5ede24e-kisspng-google-icon-5d4175d6037a16-4552672815645710940143.png
-    - assets/images/[removal.ai]_4eefa410-d30a-47d3-8050-8050591fe0f3-54158.png
     - assets/images/[removal.ai]_e9c280db-4b6c-43c6-8755-cf664c1a382e-screenshot-2024-03-30-175828.png
-    - assets/images/young-happy-businesswoman-wearing-headset-waving-while-video-conference-office.jpg
-    - assets/images/young-lady-with-deep-green-eyes-long-brown-hair.jpg
     - assets/images/download.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

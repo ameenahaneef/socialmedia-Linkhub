@@ -83,8 +83,8 @@ class AccountDetails extends StatelessWidget {
                       } else if (state is ImageUploadSuccess) {
                         context.read<AccountBloc>().add(FetchUserDataEvent());
 
-                        snackbar(context, 'Profile Image Edited Successfully',
-                            backgroundColor: green);
+                        // snackbar(context, 'Profile Image Edited Successfully',
+                        //     backgroundColor: green);
                       } else if (state is ImageUploadFailure) {
                         snackbar(context, 'Failed to edit Image',
                             backgroundColor: red);

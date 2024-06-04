@@ -10,7 +10,7 @@ class AccessRegenerator{
  try {
       final accessToken = await getAccessToken();
       final refreshToken = await getRefreshToken();
-      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.profileUrl}');
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.accessRegenerator}');
       final response = await http.get(
         url,
         headers: {
@@ -33,6 +33,7 @@ class AccessRegenerator{
         SharedPreferenceService.getLoginStatus();
       }
     } catch (e) {
+      log(e.toString());
     }
     return '';
   }

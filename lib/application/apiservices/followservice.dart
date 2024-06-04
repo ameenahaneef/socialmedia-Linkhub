@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:socialmedia/application/apiservices/accessregenerator.dart';
 import 'package:socialmedia/application/models/follow.dart';
 import 'package:socialmedia/application/models/following.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
@@ -16,7 +17,7 @@ class FollowService {
       final response = await http.post(url, headers: {
         'x-api-key': 'apikey@ciao',
         'x-access-token': '$accessToken',
-        'x-refresh-token': '$refreshToken',
+        // 'x-refresh-token': '$refreshToken',
       });
       log(response.statusCode);
       print('🤦‍♀️🤦‍♀️Response Status Code: ${response.statusCode}');
@@ -25,6 +26,25 @@ class FollowService {
         final jsonResponse = json.decode(response.body);
         final follow = Follow.fromJson(jsonResponse);
         return follow;
+      } else if (response.statusCode == 400 || response.statusCode == 401) {
+        final newAccessToken = await AccessRegenerator().accessRegenerator(
+            accessToken: accessToken!, refreshToken: refreshToken!);
+        if (newAccessToken.isNotEmpty) {
+          await storeTokens(newAccessToken, refreshToken);
+          final response = await http.post(url, headers: {
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': newAccessToken,
+            //'x-refresh-token': '$refreshToken',
+          });
+          if (response.statusCode == 200) {
+            print('successfully followed');
+             final jsonResponse = json.decode(response.body);
+        final follow = Follow.fromJson(jsonResponse);
+        return follow;
+          }else{
+            print('failed to follow');
+          }
+        }
       }
     } catch (e) {
       print('Error parsing JSON response: $e');
@@ -40,7 +60,7 @@ class FollowService {
       final response = await http.delete(url, headers: {
         'x-api-key': 'apikey@ciao',
         'x-access-token': '$accessToken',
-        'x-refresh-token': '$refreshToken'
+        //'x-refresh-token': '$refreshToken'
       });
       log(response.statusCode);
       if (response.statusCode == 200) {
@@ -49,8 +69,25 @@ class FollowService {
         final jsonResponse = json.decode(response.body);
         final follow = Follow.fromJson(jsonResponse);
         return follow;
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = await http.delete(url, headers: {
+        'x-api-key': 'apikey@ciao',
+        'x-access-token': newAccessToken,
+        //'x-refresh-token': '$refreshToken'
+      });
+      if(response.statusCode==200){
+        final jsonResponse = json.decode(response.body);
+        final follow = Follow.fromJson(jsonResponse);
+        return follow;
       }
-    } catch (e) {}
+        }
+      }
+    } catch (e) {
+      
+    }
     return null;
   }
 
@@ -62,7 +99,7 @@ class FollowService {
       final response = await http.get(url, headers: {
         'x-api-key': 'apikey@ciao',
         'x-access-token': '$accessToken',
-        'x-refresh-token': '$refreshToken'
+       // 'x-refresh-token': '$refreshToken'
       });
       log(response.statusCode);
       if (response.statusCode == 200) {
@@ -74,6 +111,27 @@ class FollowService {
             .map((data) => FollowingUser.fromJson(data))
             .toList();
         return followingList;
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+          final response = await http.get(url, headers: {
+        'x-api-key': 'apikey@ciao',
+        'x-access-token': newAccessToken,
+       // 'x-refresh-token': '$refreshToken'
+      });
+      if(response.statusCode==200){
+        final jsonResponse = json.decode(response.body);
+        List<dynamic> afterExecutionJson =
+            jsonResponse['after execution']['UserData'] ?? [];
+        List<FollowingUser> followingList = afterExecutionJson
+            .map((data) => FollowingUser.fromJson(data))
+            .toList();
+        return followingList;
+      }else{
+        print('failed to fetch');
+      }
+        }
       }
     } catch (e) {
       print('Error fetching following list: $e');
@@ -89,7 +147,7 @@ class FollowService {
       final response = await http.get(url, headers: {
         'x-api-key': 'apikey@ciao',
         'x-access-token': '$accessToken',
-        'x-refresh-token': '$refreshToken'
+        //'x-refresh-token': '$refreshToken'
       });
       log(response.statusCode);
       if (response.statusCode == 200) {
@@ -101,6 +159,27 @@ class FollowService {
             .map((data) => FollowingUser.fromJson(data))
             .toList();
         return followersList;
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = await http.get(url, headers: {
+        'x-api-key': 'apikey@ciao',
+        'x-access-token': newAccessToken,
+        //'x-refresh-token': '$refreshToken'
+      });
+      if(response.statusCode==200){
+         final jsonResponse = json.decode(response.body);
+        List<dynamic> afterExecutionJson =
+            jsonResponse['after execution']['UserData'] ?? [];
+        List<FollowingUser> followersList = afterExecutionJson
+            .map((data) => FollowingUser.fromJson(data))
+            .toList();
+        return followersList;
+      }else{
+        print('failed to fetch');
+      }
+        }
       }
     } catch (e) {
       print('Error fetching following list: $e');

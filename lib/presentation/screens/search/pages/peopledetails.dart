@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:socialmedia/application/apiservices/postservice.dart';
@@ -117,7 +116,7 @@ class PeopleDetails extends StatelessWidget {
                                             backgroundColor:
                                                 profile.followingstatus == true
                                                     ? kgrey
-                                                    : korange),
+                                                    :orange),
                                         child: Text(
                                           profile.followingstatus == true
                                               ? 'Following'

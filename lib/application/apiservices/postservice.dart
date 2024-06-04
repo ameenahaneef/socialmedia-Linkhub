@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:socialmedia/application/apiservices/accessregenerator.dart';
 import 'package:socialmedia/application/models/fetchpostmodel.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
 import 'package:socialmedia/core/endpoints.dart';
@@ -17,7 +18,7 @@ class PostApiService {
       final response = http.MultipartRequest('POST', url);
       response.headers['x-api-key'] = apikey;
       response.headers['x-access-token'] = accessToken;
-      response.headers['x-refresh-token'] = refreshToken;
+      //response.headers['x-refresh-token'] = refreshToken;
       response.fields['caption'] = caption;
       for (int i = 0; i < mediaUrls.length; i++) {
         var mediaUrl = mediaUrls[i];
@@ -27,7 +28,29 @@ class PostApiService {
       final res = await response.send();
       if (res.statusCode == 200) {
         log('image uploaded succefully');
-      } else {
+      }
+      else if(res.statusCode==400||res.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken, refreshToken: refreshToken);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = http.MultipartRequest('POST', url);
+      response.headers['x-api-key'] = apikey;
+      response.headers['x-access-token'] = newAccessToken;
+     // response.headers['x-refresh-token'] = refreshToken;
+      response.fields['caption'] = caption;
+      for (int i = 0; i < mediaUrls.length; i++) {
+        var mediaUrl = mediaUrls[i];
+        response.files
+            .add(await http.MultipartFile.fromPath('media', mediaUrl));
+      }
+      final res = await response.send();
+      if (res.statusCode == 200) {
+        log('image uploaded succefully');
+      }
+        }
+      }
+      
+       else {
         log('failed to upload image.statuscode:${res.statusCode}');
       }
     } catch (e) {
@@ -37,10 +60,10 @@ class PostApiService {
 
   Future<List<After>> postFetch({int limit = 10, int offset = 0}) async {
     try {
-      final AccessToken = await getAccessToken();
-      final RefreshToken = await getRefreshToken();
-      log(AccessToken!);
-      log(RefreshToken!);
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
+      log(accessToken!);
+      log(refreshToken!);
      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.postAddUrl}').replace(queryParameters: {
         'limit':limit.toString(),
         'offset':offset.toString()
@@ -49,8 +72,8 @@ class PostApiService {
         url,
         headers: {
           'x-api-key': 'apikey@ciao',
-          'x-access-token': AccessToken,
-          'x-refresh-token': RefreshToken
+          'x-access-token': accessToken,
+         // 'x-refresh-token': refreshToken
         },
       );
       if (response.statusCode == 200) {
@@ -66,7 +89,39 @@ class PostApiService {
 
         log('❤️❤️❤️❤️${response.body}');
         return post;
-      } else {
+      }
+      else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken, refreshToken: refreshToken);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = await http.get(
+        url,
+        headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': newAccessToken,
+         // 'x-refresh-token': refreshToken
+        },
+      );
+        if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        final List<dynamic> postData = jsonResponse['after execution']['PostsData'];
+        if (postData.isEmpty) {
+          log('nothing is available');
+          return [];
+        }
+        final List<After> post = postData
+            .map((postJson) => After.fromJson(postJson))
+            .toList();
+
+        log('❤️❤️❤️❤️${response.body}');
+        return post;
+      }
+
+        }
+      }
+      
+      
+       else {
         log('failed to fetch ${response.statusCode}');
       }
     } catch (e) {
@@ -85,14 +140,38 @@ class PostApiService {
             'Content-Type': 'application/json',
             'x-api-key': 'apikey@ciao',
             'x-access-token': '$accessToken',
-            'x-refresh-token': '$refreshToken'
+            //'x-refresh-token': '$refreshToken'
           },
          );
       log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
+      if(response.statusCode==200){
+        log('deleted successfully');
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+          final response = await http.delete(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': newAccessToken,
+            //'x-refresh-token': '$refreshToken'
+          },
+         );
+         if(response.statusCode==200){
+          log('deleted');
+         }
+        }
+      }
+   
     } catch (e) {
       log('🤦‍♂️🤦‍♂️🤦‍♂️🤦‍♂️${e.toString()}');
     }
   }
+
+
+
+
    Future<void> editCaption(String caption,String postid) async {
     try {
       final accessToken = await getAccessToken();
@@ -106,10 +185,29 @@ class PostApiService {
             'Content-Type': 'application/json',
             'x-api-key': 'apikey@ciao',
             'x-access-token': '$accessToken',
-            'x-refresh-token': '$refreshToken'
+           // 'x-refresh-token': '$refreshToken'
           },
           body: jsonEncode(body));
       log('🤦‍♀️🤦‍♀️🤦‍♀️${response.body}');
+      if(response.statusCode==200){
+        log('edited');
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken!, refreshToken: refreshToken!);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = await http.patch(url,
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': newAccessToken,
+           // 'x-refresh-token': '$refreshToken'
+          },
+          body: jsonEncode(body));
+          if(response.statusCode==200){
+            log('successs');
+          }
+        }
+      }
     } catch (e) {
       log('🍿🍿${e.toString()}');
     }
@@ -119,10 +217,10 @@ class PostApiService {
 
  Future<List<After>> getUserPost( {required int userId,int limit = 12, int offset = 0}) async {
     try {
-      final AccessToken = await getAccessToken();
-      final RefreshToken = await getRefreshToken();
-      log(AccessToken!);
-      log(RefreshToken!);
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
+      log(accessToken!);
+      log(refreshToken!);
        final url = Uri.parse('${EndPoints.baseUrl}/post?')
         .replace(queryParameters: {
           'limit': limit.toString(),
@@ -133,8 +231,8 @@ class PostApiService {
         url,
         headers: {
           'x-api-key': 'apikey@ciao',
-          'x-access-token': AccessToken,
-          'x-refresh-token': RefreshToken
+          'x-access-token': accessToken,
+          //'x-refresh-token': RefreshToken
         },
       );
       log('💕💕💕💕💕💕💕${response.body}');
@@ -152,7 +250,38 @@ class PostApiService {
         log('❤️❤️❤️❤️${response.body}');
         print('👀👀👀👀👀👀$post');
         return post;
-      } else {
+      }else if(response.statusCode==400||response.statusCode==401){
+        final newAccessToken=await AccessRegenerator().accessRegenerator(accessToken: accessToken, refreshToken:refreshToken);
+        if(newAccessToken.isNotEmpty){
+          await storeTokens(newAccessToken, refreshToken);
+           final response = await http.get(
+        url,
+        headers: {
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': newAccessToken,
+          //'x-refresh-token': RefreshToken
+        },
+      );
+      if(response.statusCode==200){
+         final jsonResponse = json.decode(response.body);
+        final List<dynamic> postData = jsonResponse['after execution']['PostsData'];
+        if (postData.isEmpty) {
+          log('nothing is available');
+          return [];
+        }
+        final List<After> post = postData
+            .map((postJson) => After.fromJson(postJson))
+            .toList();
+
+        log('❤️❤️❤️❤️${response.body}');
+        print('👀👀👀👀👀👀$post');
+        return post;
+      }
+        }
+      }
+      
+      
+       else {
         log('failed to fetch ${response.statusCode}');
       }
     } catch (e) {

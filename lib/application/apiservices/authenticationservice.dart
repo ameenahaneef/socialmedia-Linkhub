@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:socialmedia/application/apiservices/accessregenerator.dart';
 import 'package:socialmedia/application/models/profilemodel.dart';
 import 'package:socialmedia/application/models/usermodel.dart';
 import 'package:socialmedia/application/securestorage/securestorage.dart';
@@ -24,8 +25,8 @@ class SignupService {
             'Content-Type': 'application/json'
           },
           body: jsonEncode(body));
-       log('Error:${response.statusCode}');
-       log(response.body);
+      log('Error:${response.statusCode}');
+      log(response.body);
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         final token = jsonResponse['after execution']['Token'] ?? '';
@@ -131,47 +132,53 @@ class SignupService {
   }
 
   Future<ProfileModel?> fetchUser() async {
-  try {
-    final accessToken = await getAccessToken();
-    final refreshToken = await getRefreshToken();
-    final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.profileUrl}');
-    final response = await http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': 'apikey@ciao',
-        'x-access-token': accessToken!,
-        'x-refresh-token': '$refreshToken'
-      },
-    );
-    if (response.statusCode == 200) {
-      print('${response.statusCode}');
-      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      final ProfileModel details = ProfileModel.fromJson(jsonResponse);
-      final userId=details.afterExecution!.id;
-          await SharedPreferenceService.saveUserId(userId);
-      return details;
-    } else {
-      log('🍿🍿🍿🍿failed to fetch ${response.statusCode}');
+    try {
+      final accessToken = await getAccessToken();
+      final refreshToken = await getRefreshToken();
+      final url = Uri.parse('${EndPoints.baseUrl}${EndPoints.profileUrl}');
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'apikey@ciao',
+          'x-access-token': accessToken!,
+          //'x-refresh-token': '$refreshToken'
+        },
+      );
+      if (response.statusCode == 200) {
+        print('${response.statusCode}');
+        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        final ProfileModel details = ProfileModel.fromJson(jsonResponse);
+        final userId = details.afterExecution!.id;
+        await SharedPreferenceService.saveUserId(userId);
+        return details;
+      } else if (response.statusCode == 401||response.statusCode==400) {
+        final newAccessToken = await AccessRegenerator().accessRegenerator(
+            accessToken: accessToken, refreshToken: refreshToken!);
+        if (newAccessToken.isNotEmpty) {
+          await storeTokens(newAccessToken, refreshToken);
+
+          final response = await http.get(url, headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': 'apikey@ciao',
+            'x-access-token': newAccessToken,
+          });
+          if (response.statusCode == 200) {
+            final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+            final ProfileModel details = ProfileModel.fromJson(jsonResponse);
+            final userId = details.afterExecution!.id;
+            await SharedPreferenceService.saveUserId(userId);
+            return details;
+          } else {
+            log('🍿🍿🍿🍿failed to fetch ${response.statusCode}');
+          }
+        } else {
+          log('🍿🍿🍿🍿failed to fetch ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      log('👀😒😒😒😒😒error ${e.toString()}');
     }
-  } catch (e) {
-    log('👀😒😒😒😒😒error ${e.toString()}');
+    return null;
   }
-  return null;
 }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
