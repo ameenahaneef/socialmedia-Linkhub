@@ -43,7 +43,7 @@ class Columnmessage extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: widget.id != chat.senderId
-                    ? korange.withOpacity(0.7)
+                    ? orange.withOpacity(0.7)
                     : kgrey,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(25),
@@ -72,7 +72,7 @@ class Columnmessage extends StatelessWidget {
                   Text(
                     formattedTime,
                     style: TextStyle(
-                        color: kwhite.withOpacity(0.6)),
+                        color: black.withOpacity(0.6),fontSize: 10 ),
                   )
                 ],
               ),

@@ -3,8 +3,10 @@ import 'package:socialmedia/application/apiservices/authenticationservice.dart';
 import 'package:socialmedia/application/models/usermodel.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
+import 'package:socialmedia/core/navigator.dart';
 import 'package:socialmedia/presentation/screens/login/widget/formfield.dart';
 import 'package:socialmedia/presentation/screens/otp/pages/otpscreen.dart';
+import 'package:socialmedia/presentation/screens/settings/privacypolicy.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -112,7 +114,15 @@ class SignUpScreen extends StatelessWidget {
                         },
                         style: buttonstyle,
                         child: const Text('Create Account'),
-                      )
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        Text('See',style: nostyle,),
+                        TextButton(onPressed: (){
+                          navigate(context, PrivacyPolicy());
+                        }, child: Text('Privacy Policy',style: TextStyle(color: orange),))
+                      ],)
                     ],
                   ),
                 ),

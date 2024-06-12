@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:socialmedia/application/sharedpreference/sharedpreference.dart';
 import 'package:socialmedia/core/colors/colors.dart';
 import 'package:socialmedia/core/constants.dart';
@@ -8,6 +7,7 @@ import 'package:socialmedia/presentation/screens/login/pages/login.dart';
 import 'package:socialmedia/presentation/screens/messages/pages/messages.dart';
 import 'package:socialmedia/presentation/screens/settings/about.dart';
 import 'package:socialmedia/presentation/screens/settings/privacypolicy.dart';
+import 'package:share_plus/share_plus.dart';
 
 Future<dynamic> bottomsheet(BuildContext context) {
   return showModalBottomSheet(

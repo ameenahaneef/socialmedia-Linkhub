@@ -19,7 +19,7 @@ class SearchApiService {
         'x-access-token': '$accessToken',
         // 'x-refresh-token': '$refreshToken'
       });
-      log(response.body);
+      log("Global post ${response.body}");
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final List<dynamic> postData =
@@ -41,6 +41,7 @@ class SearchApiService {
             'x-access-token': newAccessToken,
             //'x-refresh-token': '$refreshToken'
           });
+          log('Response after expire: ${response.body}');
           if (response.statusCode == 200) {
             final jsonResponse = json.decode(response.body);
             final List<dynamic> postData =
@@ -51,6 +52,7 @@ class SearchApiService {
             }
             final List<After> post =
                 postData.map((postJson) => After.fromJson(postJson)).toList();
+                log('Post length: ${post.length}');
             return post;
           }
         }
